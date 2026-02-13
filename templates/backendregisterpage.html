@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Registration - Vortex Agent Backend</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <a href="index.html">Vortex Agent</a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/backendoverviewpage">Admin Portal</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Registration Section -->
+    <section class="admin-registration">
+        <div class="container">
+            <div class="admin-reg-panel">
+                <div class="admin-reg-header">
+                    <h1>Register Administrator Account</h1>
+                    <p>Create your administrator account for system management</p>
+                </div>
+
+                <!-- Admin Registration Form -->
+                <div class="admin-reg-form-wrapper">
+                    <form class="admin-reg-form" id="adminRegistrationForm">
+                        <div class="form-group">
+                            <label for="adminname">Administrator Name</label>
+                            <input type="text" id="adminname" name="adminname" placeholder="Enter administrator name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adminemail">Email Address</label>
+                            <input type="email" id="adminemail" name="adminemail" placeholder="Enter your email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adminusername">Username</label>
+                            <input type="text" id="adminusername" name="adminusername" placeholder="Create a username" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adminpassword">Password</label>
+                            <input type="password" id="adminpassword" name="adminpassword" placeholder="Create a strong password" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmadminpassword">Confirm Password</label>
+                            <input type="password" id="confirmadminpassword" name="confirmadminpassword" placeholder="Confirm your password" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">Create Admin Account</button>
+                    </form>
+
+                    <div class="admin-reg-footer">
+                        <p>Already have an admin account? <a href="/backendoverviewpage">Login</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/backendoverviewpage">Admin Portal</a></li>
+                        <li><a href="/register" class="disabled">Register</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="https://twitter.com/" target="_blank">Twitter</a></li>
+                        <li><a href="https://linkedin.com/" target="_blank">LinkedIn</a></li>
+                        <li><a href="https://github.com/" target="_blank">GitHub</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p><a href="mailto:jockeroika@gmail.com">jockeroika@gmail.com</a></p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Vortex Agent. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../static/backend-register-script.js"></script>
+</body>
+</html>

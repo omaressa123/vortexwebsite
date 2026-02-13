@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Vortex Agent</title>
+    <link rel="stylesheet" href="/backend-style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <a href="/backend-dashboard" class="active">Vortex Agent Admin</a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/backend-dashboard" class="active">Dashboard</a></li>
+                    <li><a href="/backend-kpi">KPI Summary</a></li>
+                    <li><a href="/backend-analytics">Analytics</a></li>
+                    <li><a href="/backend-registrations">Manage Users</a></li>
+                    <li><a href="#" onclick="logout()">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Admin Panel</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/backend-dashboard" class="nav-link active">
+                <span class="icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="/backend-kpi" class="nav-link">
+                <span class="icon">📈</span>
+                <span>KPI Summary</span>
+            </a>
+            <a href="/backend-analytics" class="nav-link">
+                <span class="icon">📉</span>
+                <span>Analytics</span>
+            </a>
+            <a href="/backend-registrations" class="nav-link">
+                <span class="icon">👤</span>
+                <span>Manage Users</span>
+            </a>
+            <a href="/backend-reports" class="nav-link">
+                <span class="icon">📋</span>
+                <span>Reports</span>
+            </a>
+            <hr>
+            <a href="#" onclick="logout()" class="nav-link logout">
+                <span class="icon">🚪</span>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <h1>Welcome to Admin Dashboard</h1>
+            <p id="adminGreeting"></p>
+        </div>
+
+        <!-- KPI Cards -->
+        <section class="kpi-section">
+            <div class="kpi-card">
+                <div class="kpi-icon total-users">👥</div>
+                <div class="kpi-info">
+                    <div class="kpi-label">Total Users</div>
+                    <div class="kpi-value" id="totalUsers">0</div>
+                    <div class="kpi-change">↑ 2.5% from last month</div>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-icon active-users">🟢</div>
+                <div class="kpi-info">
+                    <div class="kpi-label">Active Users</div>
+                    <div class="kpi-value" id="activeUsers">0</div>
+                    <div class="kpi-change">↑ 5.2% from last week</div>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-icon revenue">💰</div>
+                <div class="kpi-info">
+                    <div class="kpi-label">Total Revenue</div>
+                    <div class="kpi-value" id="totalRevenue">—</div>
+                    <div class="kpi-change">↑ 8.3% from last month</div>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-icon active-users">🟢</div>
+                <div class="kpi-info">
+                    <div class="kpi-label">Active Users</div>
+                    <div class="kpi-value" id="activeUsersDuplicate">0</div>
+                    <div class="kpi-change">↑ 5.2% from last week</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Summary Section -->
+            <section class="dashboard-card large">
+                <div class="card-header">
+                    <h2>System Summary</h2>
+                    <span class="time">Last 30 Days</span>
+                </div>
+                <div class="card-body">
+                    <div class="summary-stats">
+                        <div class="stat">
+                            <span class="stat-label">Total Visits</span>
+                            <span class="stat-value" id="totalVisits">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Unique Visitors</span>
+                            <span class="stat-value" id="uniqueVisitors">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Bounce Rate</span>
+                            <span class="stat-value" id="bounceRate">—</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Avg Session Duration</span>
+                            <span class="stat-value" id="avgSessionDuration">—</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="dashboard-card">
+                <div class="card-header">
+                    <h2>Recent Activity</h2>
+                </div>
+                <div class="card-body">
+                    <div class="activity-list" id="recentActivityList"></div>
+                </div>
+            </section>
+
+            <!-- Quick Stats -->
+            <section class="dashboard-card">
+                <div class="card-header">
+                    <h2>Quick Stats</h2>
+                </div>
+                <div class="card-body">
+                    <div class="quick-stats">
+                        <div class="quick-stat">
+                            <div class="stat-bar">
+                                <div class="progress" id="serverHealthBar" style="width: 0%"></div>
+                            </div>
+                            <span class="stat-name">Server Health</span>
+                            <span class="stat-percent" id="serverHealthPercent">0%</span>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="stat-bar">
+                                <div class="progress" id="uptimeBar" style="width: 0%"></div>
+                            </div>
+                            <span class="stat-name">Uptime</span>
+                            <span class="stat-percent" id="uptimePercent">0%</span>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="stat-bar">
+                                <div class="progress" id="apiResponseBar" style="width: 0%"></div>
+                            </div>
+                            <span class="stat-name">API Response</span>
+                            <span class="stat-percent" id="apiResponsePercent">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Traffic Sources -->
+            <section class="dashboard-card">
+                <div class="card-header">
+                    <h2>Traffic Sources</h2>
+                </div>
+                <div class="card-body">
+                    <div class="traffic-list">
+                        <div class="traffic-item">
+                            <div class="traffic-name">Organic Search</div>
+                            <div class="traffic-bar">
+                                <div class="bar-fill" id="trafficOrganicBar" style="width: 0%"></div>
+                            </div>
+                            <div class="traffic-percent" id="trafficOrganicPercent">0%</div>
+                        </div>
+                        <div class="traffic-item">
+                            <div class="traffic-name">Direct</div>
+                            <div class="traffic-bar">
+                                <div class="bar-fill" id="trafficDirectBar" style="width: 0%"></div>
+                            </div>
+                            <div class="traffic-percent" id="trafficDirectPercent">0%</div>
+                        </div>
+                        <div class="traffic-item">
+                            <div class="traffic-name">Referral</div>
+                            <div class="traffic-bar">
+                                <div class="bar-fill" id="trafficReferralBar" style="width: 0%"></div>
+                            </div>
+                            <div class="traffic-percent" id="trafficReferralPercent">0%</div>
+                        </div>
+                        <div class="traffic-item">
+                            <div class="traffic-name">Social Media</div>
+                            <div class="traffic-bar">
+                                <div class="bar-fill" id="trafficSocialBar" style="width: 0%"></div>
+                            </div>
+                            <div class="traffic-percent" id="trafficSocialPercent">0%</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Top Pages -->
+            <section class="dashboard-card">
+                <div class="card-header">
+                    <h2>Top Pages</h2>
+                </div>
+                <div class="card-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Page</th>
+                                <th>Views</th>
+                                <th>Bounce Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>/</td>
+                                <td id="topPageHomeViews">0</td>
+                                <td id="topPageHomeBounce">0%</td>
+                            </tr>
+                            <tr>
+                                <td>/backendoverviewpage</td>
+                                <td id="topPageAdminViews">0</td>
+                                <td id="topPageAdminBounce">0%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="/backend-script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginStatus = checkLoginStatus();
+            if (!loginStatus) {
+                window.location.href = '/backendoverviewpage.html';
+            } else {
+                const greeting = document.getElementById('adminGreeting');
+                greeting.textContent = `Hello, Admin! Welcome back to your dashboard.`;
+            }
+        });
+    </script>
+</body>
+</html>

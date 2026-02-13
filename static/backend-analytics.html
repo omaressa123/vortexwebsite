@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - Vortex Agent Admin</title>
+    <link rel="stylesheet" href="/backend-style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <a href="/backend-dashboard">Vortex Agent Admin</a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/backend-dashboard">Dashboard</a></li>
+                    <li><a href="/backend-kpi">KPI Summary</a></li>
+                    <li><a href="/backend-analytics" class="active">Analytics</a></li>
+                    <li><a href="/backend-registrations">Manage Users</a></li>
+                    <li><a href="#" onclick="logout()">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Admin Panel</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/backend-dashboard" class="nav-link">
+                <span class="icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="/backend-kpi" class="nav-link">
+                <span class="icon">📈</span>
+                <span>KPI Summary</span>
+            </a>
+            <a href="/backend-analytics" class="nav-link active">
+                <span class="icon">📉</span>
+                <span>Analytics</span>
+            </a>
+            <a href="/backend-registrations" class="nav-link">
+                <span class="icon">👤</span>
+                <span>Manage Users</span>
+            </a>
+            <a href="/backend-reports" class="nav-link">
+                <span class="icon">📋</span>
+                <span>Reports</span>
+            </a>
+            <hr>
+            <a href="#" onclick="logout()" class="nav-link logout">
+                <span class="icon">🚪</span>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <h1>Analytics</h1>
+            <p>Detailed Website & User Analytics</p>
+        </div>
+
+        <!-- Time Period Selector -->
+        <div class="analytics-controls">
+            <button class="btn-period active">Last 7 Days</button>
+            <button class="btn-period">Last 30 Days</button>
+            <button class="btn-period">Last 90 Days</button>
+            <button class="btn-period">Last Year</button>
+        </div>
+
+        <!-- Analytics Grid -->
+        <div class="analytics-grid">
+            <!-- Website Traffic -->
+            <section class="analytics-card large">
+                <div class="card-header">
+                    <h2>Website Traffic</h2>
+                </div>
+                <div class="card-body">
+                    <div class="traffic-chart">
+                        <canvas id="trafficChart" style="max-height: 300px;"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Traffic Sources -->
+            <section class="analytics-card">
+                <div class="card-header">
+                    <h2>Traffic Sources</h2>
+                </div>
+                <div class="card-body">
+                    <div class="source-list">
+                        <div class="source-item">
+                            <div class="source-info">
+                                <span class="source-name">Organic Search</span>
+                                <span class="source-percent" id="analyticsTrafficOrganicPercent">0%</span>
+                            </div>
+                            <div class="source-bar">
+                                <div class="bar-fill" id="analyticsTrafficOrganicBar" style="width: 0%; background-color: #6366f1;"></div>
+                            </div>
+                            <span class="source-count" id="analyticsTrafficOrganicCount">0 visits</span>
+                        </div>
+
+                        <div class="source-item">
+                            <div class="source-info">
+                                <span class="source-name">Direct</span>
+                                <span class="source-percent" id="analyticsTrafficDirectPercent">0%</span>
+                            </div>
+                            <div class="source-bar">
+                                <div class="bar-fill" id="analyticsTrafficDirectBar" style="width: 0%; background-color: #4f46e5;"></div>
+                            </div>
+                            <span class="source-count" id="analyticsTrafficDirectCount">0 visits</span>
+                        </div>
+
+                        <div class="source-item">
+                            <div class="source-info">
+                                <span class="source-name">Referral</span>
+                                <span class="source-percent" id="analyticsTrafficReferralPercent">0%</span>
+                            </div>
+                            <div class="source-bar">
+                                <div class="bar-fill" id="analyticsTrafficReferralBar" style="width: 0%; background-color: #818cf8;"></div>
+                            </div>
+                            <span class="source-count" id="analyticsTrafficReferralCount">0 visits</span>
+                        </div>
+
+                        <div class="source-item">
+                            <div class="source-info">
+                                <span class="source-name">Social Media</span>
+                                <span class="source-percent" id="analyticsTrafficSocialPercent">0%</span>
+                            </div>
+                            <div class="source-bar">
+                                <div class="bar-fill" id="analyticsTrafficSocialBar" style="width: 0%; background-color: #a5b4fc;"></div>
+                            </div>
+                            <span class="source-count" id="analyticsTrafficSocialCount">0 visits</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- User Demographics -->
+            <section class="analytics-card">
+                <div class="card-header">
+                    <h2>User Demographics</h2>
+                </div>
+                <div class="card-body">
+                    <div class="demographics">
+                        <div class="demo-item">
+                            <div class="demo-label">Desktop Users</div>
+                            <div class="demo-value" id="analyticsDesktopPercent">0%</div>
+                            <div class="demo-bar">
+                                <div class="bar-fill" id="analyticsDesktopBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="demo-item">
+                            <div class="demo-label">Mobile Users</div>
+                            <div class="demo-value" id="analyticsMobilePercent">0%</div>
+                            <div class="demo-bar">
+                                <div class="bar-fill" id="analyticsMobileBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="demo-item">
+                            <div class="demo-label">Tablet Users</div>
+                            <div class="demo-value" id="analyticsTabletPercent">0%</div>
+                            <div class="demo-bar">
+                                <div class="bar-fill" id="analyticsTabletBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Top Countries -->
+            <section class="analytics-card">
+                <div class="card-header">
+                    <h2>Top Countries</h2>
+                </div>
+                <div class="card-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Country</th>
+                                <th>Users</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody id="analyticsTopCountriesTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Page Performance -->
+            <section class="analytics-card large">
+                <div class="card-header">
+                    <h2>Page Performance</h2>
+                </div>
+                <div class="card-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Page</th>
+                                <th>Views</th>
+                                <th>Unique Users</th>
+                                <th>Avg Duration</th>
+                                <th>Bounce Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody id="analyticsPagePerformanceTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- User Behavior -->
+            <section class="analytics-card">
+                <div class="card-header">
+                    <h2>User Behavior</h2>
+                </div>
+                <div class="card-body">
+                    <div class="behavior-stats">
+                        <div class="behavior-item">
+                            <span class="behavior-label">Avg Pages/Session</span>
+                            <span class="behavior-value" id="analyticsAvgPagesPerSession">0</span>
+                            <span class="behavior-change" id="analyticsAvgPagesPerSessionChange">—</span>
+                        </div>
+                        <div class="behavior-item">
+                            <span class="behavior-label">Avg Session Duration</span>
+                            <span class="behavior-value" id="analyticsAvgSessionDuration">—</span>
+                            <span class="behavior-change" id="analyticsAvgSessionDurationChange">—</span>
+                        </div>
+                        <div class="behavior-item">
+                            <span class="behavior-label">Bounce Rate</span>
+                            <span class="behavior-value" id="analyticsBounceRate">0%</span>
+                            <span class="behavior-change" id="analyticsBounceRateChange">—</span>
+                        </div>
+                        <div class="behavior-item">
+                            <span class="behavior-label">Conversion Rate</span>
+                            <span class="behavior-value" id="analyticsConversionRate">0%</span>
+                            <span class="behavior-change" id="analyticsConversionRateChange">—</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Device Breakdown -->
+            <section class="analytics-card">
+                <div class="card-header">
+                    <h2>Device Breakdown</h2>
+                </div>
+                <div class="card-body">
+                    <div class="device-grid">
+                        <div class="device-item">
+                            <div class="device-icon">💻</div>
+                            <div class="device-info">
+                                <div class="device-name">Desktop</div>
+                                <div class="device-users" id="analyticsDesktopUsers">0 users</div>
+                            </div>
+                            <div class="device-percent" id="analyticsDesktopUsersPercent">0%</div>
+                        </div>
+
+                        <div class="device-item">
+                            <div class="device-icon">📱</div>
+                            <div class="device-info">
+                                <div class="device-name">Mobile</div>
+                                <div class="device-users" id="analyticsMobileUsers">0 users</div>
+                            </div>
+                            <div class="device-percent" id="analyticsMobileUsersPercent">0%</div>
+                        </div>
+
+                        <div class="device-item">
+                            <div class="device-icon">📱</div>
+                            <div class="device-info">
+                                <div class="device-name">Tablet</div>
+                                <div class="device-users" id="analyticsTabletUsers">0 users</div>
+                            </div>
+                            <div class="device-percent" id="analyticsTabletUsersPercent">0%</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/backend-script.js"></script>
+</body>
+</html>

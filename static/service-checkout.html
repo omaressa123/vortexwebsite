@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Checkout - Vortex Agent</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <a href="/services">Vortex Agent</a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/services">Services</a></li>
+                    <li><a href="#" onclick="logout()">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main">
+        <section class="container" style="margin-top: 24px;">
+            <div class="panel" style="padding: 18px;">
+                <h2 style="margin-top: 0;">InstaPay Deposit</h2>
+                <p id="checkoutStatus" style="margin: 8px 0 0 0;">Loading order...</p>
+
+                <div id="checkoutDetails" style="display: none; margin-top: 16px;">
+                    <div class="feature-card" style="max-width: 720px; margin: 0 auto;">
+                        <h3 id="checkoutServiceName" style="margin-top: 0;">—</h3>
+                        <p><strong>Order ID:</strong> <span id="checkoutOrderId">—</span></p>
+                        <p><strong>Deposit amount:</strong> <span id="checkoutDeposit">—</span></p>
+                        <p><strong>Transfer to:</strong> <span id="checkoutName">—</span> (<span id="checkoutPhone">—</span>)</p>
+
+                        <div id="checkoutQrBlock" style="margin-top: 14px;">
+                            <h4 style="margin: 0 0 10px 0;">Scan QR</h4>
+                            <img id="checkoutQrImg" alt="InstaPay QR" style="max-width: 260px; width: 100%; background: #fff; padding: 10px; border-radius: 12px;" />
+                        </div>
+
+                        <div style="margin-top: 16px;">
+                            <h4 style="margin: 0 0 10px 0;">Upload transfer screenshot</h4>
+                            <form id="receiptForm">
+                                <input type="file" id="receiptFile" name="screenshot" accept="image/*" required />
+                                <div style="margin-top: 10px;">
+                                    <button type="submit" class="btn btn-primary">Submit Screenshot</button>
+                                </div>
+                            </form>
+                            <p id="receiptResult" style="margin-top: 10px;"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

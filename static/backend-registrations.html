@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users - Vortex Agent Admin</title>
+    <link rel="stylesheet" href="/backend-style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <a href="/backend-dashboard">Vortex Agent Admin</a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/backend-dashboard">Dashboard</a></li>
+                    <li><a href="/backend-kpi">KPI Summary</a></li>
+                    <li><a href="/backend-analytics">Analytics</a></li>
+                    <li><a href="/backend-registrations" class="active">Manage Users</a></li>
+                    <li><a href="#" onclick="logout()">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Admin Panel</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/backend-dashboard" class="nav-link">
+                <span class="icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="/backend-kpi" class="nav-link">
+                <span class="icon">📈</span>
+                <span>KPI Summary</span>
+            </a>
+            <a href="/backend-analytics" class="nav-link">
+                <span class="icon">📉</span>
+                <span>Analytics</span>
+            </a>
+            <a href="/backend-registrations" class="nav-link active">
+                <span class="icon">👤</span>
+                <span>Manage Users</span>
+            </a>
+            <a href="/backend-reports" class="nav-link">
+                <span class="icon">📋</span>
+                <span>Reports</span>
+            </a>
+            <hr>
+            <a href="#" onclick="logout()" class="nav-link logout">
+                <span class="icon">🚪</span>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <h1>Manage Users</h1>
+            <p>View, edit, and manage all platform users</p>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-section">
+            <div class="filter-group">
+                <label>Filter by Type:</label>
+                <select id="typeFilter">
+                    <option value="all">All Users</option>
+                    <option value="user">Regular Users</option>
+                    <option value="admin">Administrators</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Filter by Status:</label>
+                <select id="statusFilter">
+                    <option value="all">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="pending">Pending</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <input type="search" id="searchFilter" placeholder="Search by email or name...">
+            </div>
+            <button class="btn-filter" onclick="applyUserFilters()">Search</button>
+        </div>
+
+        <!-- Recent Registrations Grid -->
+        <div class="users-section">
+            <!-- Active Users -->
+            <section class="users-card">
+                <div class="card-header">
+                    <h2>Active Users (Last 24 Hours)</h2>
+                    <span class="count" id="activeUsers24hCount">0 active users</span>
+                </div>
+                <div class="card-body">
+                    <div class="users-table">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Last Active</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="activeUsers24hTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Admin Users -->
+            <section class="users-card">
+                <div class="card-header">
+                    <h2>Administrators (Last 7 Days)</h2>
+                    <span class="count" id="admins7dCount">0 administrators</span>
+                </div>
+                <div class="card-body">
+                    <div class="users-table">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Admin Name</th>
+                                    <th>Email</th>
+                                    <th>Username</th>
+                                    <th>Registration Date</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admins7dTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- User Statistics -->
+            <section class="users-card">
+                <div class="card-header">
+                    <h2>User Statistics</h2>
+                </div>
+                <div class="card-body">
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-title">Today</div>
+                            <div class="stat-number" id="usersStatsToday">0</div>
+                            <div class="stat-subtitle">active users</div>
+                        </div>
+
+                        <div class="stat-box">
+                            <div class="stat-title">This Week</div>
+                            <div class="stat-number" id="usersStatsWeek">0</div>
+                            <div class="stat-subtitle">active users</div>
+                        </div>
+
+                        <div class="stat-box">
+                            <div class="stat-title">This Month</div>
+                            <div class="stat-number" id="usersStatsMonth">0</div>
+                            <div class="stat-subtitle">active users</div>
+                        </div>
+
+                        <div class="stat-box">
+                            <div class="stat-title">Active Rate</div>
+                            <div class="stat-number" id="usersStatsActiveRate">0%</div>
+                            <div class="stat-subtitle">users active</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Activity Log -->
+            <section class="users-card">
+                <div class="card-header">
+                    <h2>Recent Activity Log</h2>
+                </div>
+                <div class="card-body">
+                    <div class="activity-log" id="usersRecentActivityLog"></div>
+                </div>
+            </section>
+
+            <!-- User Engagement -->
+            <section class="users-card">
+                <div class="card-header">
+                    <h2>User Engagement</h2>
+                </div>
+                <div class="card-body">
+                    <div class="channels-list">
+                        <div class="channel-item">
+                            <span class="channel-name">Premium Content</span>
+                            <span class="channel-count" id="engagementPremiumCount">0</span>
+                            <div class="channel-bar">
+                                <div class="bar-fill" id="engagementPremiumBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="channel-item">
+                            <span class="channel-name">Basic Features</span>
+                            <span class="channel-count" id="engagementBasicCount">0</span>
+                            <div class="channel-bar">
+                                <div class="bar-fill" id="engagementBasicBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="channel-item">
+                            <span class="channel-name">Admin Functions</span>
+                            <span class="channel-count" id="engagementAdminCount">0</span>
+                            <div class="channel-bar">
+                                <div class="bar-fill" id="engagementAdminBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="/backend-script.js"></script>
+    <script>
+        function applyUserFilters() {
+            const typeFilter = document.getElementById('typeFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const searchFilter = document.getElementById('searchFilter').value;
+
+            console.log('User filters applied:', { typeFilter, statusFilter, searchFilter });
+            showNotification('User filters applied successfully', 'success');
+        }
+    </script>
+</body>
+</html>

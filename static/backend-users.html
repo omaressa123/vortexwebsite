@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users - Vortex Agent Admin</title>
+    <link rel="stylesheet" href="/backend-style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <a href="/backend-dashboard">Vortex Agent Admin</a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/backend-dashboard">Dashboard</a></li>
+                    <li><a href="/backend-kpi">KPI Summary</a></li>
+                    <li><a href="/backend-analytics">Analytics</a></li>
+                    <li><a href="/backend-registrations">Manage Users</a></li>
+                    <li><a href="#" onclick="logout()">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Admin Panel</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/backend-dashboard" class="nav-link">
+                <span class="icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="/backend-kpi" class="nav-link">
+                <span class="icon">📈</span>
+                <span>KPI Summary</span>
+            </a>
+            <a href="/backend-analytics" class="nav-link">
+                <span class="icon">📉</span>
+                <span>Analytics</span>
+            </a>
+            <a href="/backend-registrations" class="nav-link">
+                <span class="icon">👤</span>
+                <span>Manage Users</span>
+            </a>
+            <a href="/backend-reports" class="nav-link">
+                <span class="icon">📋</span>
+                <span>Reports</span>
+            </a>
+            <hr>
+            <a href="#" onclick="logout()" class="nav-link logout">
+                <span class="icon">🚪</span>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <h1>Manage Users</h1>
+            <p>View, edit, and manage all platform users</p>
+        </div>
+
+        <!-- User Management Controls -->
+        <div class="filters-section">
+            <div class="filter-group">
+                <label>Status:</label>
+                <select>
+                    <option>All Users</option>
+                    <option>Active</option>
+                    <option>Inactive</option>
+                    <option>Suspended</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Join Date:</label>
+                <select>
+                    <option>All Time</option>
+                    <option>Last 30 Days</option>
+                    <option>Last 90 Days</option>
+                    <option>Last Year</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <input type="search" placeholder="Search by email or name...">
+            </div>
+            <button class="btn-filter">Search</button>
+            <button class="btn-filter" onclick="exportTableToCSV('users.csv', 'usersTable')" style="background: #10b981;">Export</button>
+        </div>
+
+        <!-- Users Table -->
+        <section class="registrations-card">
+            <div class="card-header">
+                <h2>All Users</h2>
+                <span class="count" id="allUsersCount">0 users</span>
+            </div>
+            <div class="card-body">
+                <div class="registrations-table">
+                    <table class="data-table" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Join Date</th>
+                                <th>Last Active</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allUsersTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- User Statistics -->
+        <section class="registrations-card">
+            <div class="card-header">
+                <h2>User Statistics</h2>
+            </div>
+            <div class="card-body">
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-title">Active Users</div>
+                        <div class="stat-number">8,500</div>
+                        <div class="stat-subtitle">85% of total</div>
+                    </div>
+
+                    <div class="stat-box">
+                        <div class="stat-title">Inactive Users</div>
+                        <div class="stat-number">1,200</div>
+                        <div class="stat-subtitle">12% of total</div>
+                    </div>
+
+                    <div class="stat-box">
+                        <div class="stat-title">Suspended Users</div>
+                        <div class="stat-number">300</div>
+                        <div class="stat-subtitle">3% of total</div>
+                    </div>
+
+                    <div class="stat-box">
+                        <div class="stat-title">New This Month</div>
+                        <div class="stat-number">1,250</div>
+                        <div class="stat-subtitle">Growth: +2.5%</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/backend-script.js"></script>
+    <script>
+        function editUser(userId) {
+            showNotification(`Editing user #${userId}`, 'info');
+        }
+
+        function suspendUser(userId) {
+            showNotification(`User #${userId} suspended`, 'warning');
+        }
+
+        function deleteUser(userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                showNotification(`User #${userId} deleted`, 'success');
+            }
+        }
+    </script>
+</body>
+</html>

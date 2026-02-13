@@ -1,0 +1,133 @@
+{
+  "site": {
+    "name": "Vortex Agent",
+    "version": "1.0.0",
+    "copyright": "© 2026 Vortex Agent. All rights reserved.",
+    "contact": "support@website.com"
+  },
+  "pages": {
+    "home": {
+      "title": "Build Your Future With Us",
+      "url": "/",
+      "description": "Experience a seamless integration of modern design and robust performance. Join our platform today to unlock exclusive features tailored for your success.",
+      "cta": {
+        "text": "Coming Soon",
+        "link": "#"
+      },
+      "trust_statement": "Join over 10,000+ users trusting our platform.",
+      "sections": [
+        {
+          "id": "hero",
+          "type": "hero",
+          "title": "Build Your Future With Us",
+          "description": "Experience a seamless integration of modern design and robust performance."
+        },
+        {
+          "id": "features",
+          "type": "features",
+          "title": "Our Features",
+          "items": [
+            {
+              "title": "Modern Design",
+              "description": "Beautiful and responsive interface designed for all devices"
+            },
+            {
+              "title": "Robust Performance",
+              "description": "Lightning-fast platform optimized for reliability"
+            },
+            {
+              "title": "Secure Gateway",
+              "description": "Enterprise-level security for your peace of mind"
+            },
+            {
+              "title": "Easy Integration",
+              "description": "Seamless integration with your existing systems"
+            }
+          ]
+        }
+      ]
+    },
+    "admin_portal": {
+      "title": "Admin Portal",
+      "url": "/backendoverviewpage/",
+      "description": "Secure gateway for system management",
+      "type": "login",
+      "fields": [
+        {
+          "name": "username",
+          "type": "text",
+          "label": "Omar essa",
+          "placeholder": "Enter your username",
+          "required": true
+        },
+        {
+          "name": "password",
+          "type": "password",
+          "label": "Omaressa123",
+          "placeholder": "Enter your password",
+          "required": true
+        }
+      ],
+      "actions": [
+        {
+          "text": "Login to Dashboard",
+          "type": "submit",
+          "link": "/dashboard/"
+        }
+      ],
+      "footer_link": {
+        "text": "New administrator? Contact support",
+        "link": "#"
+      }
+    },
+  },
+  "navigation": {
+    "main": [
+      {
+        "text": "Home",
+        "link": "/"
+      },
+      {
+        "text": "Features",
+        "link": "#features"
+      },
+      {
+        "text": "About",
+        "link": "#about"
+      },
+      {
+        "text": "Contact",
+        "link": "#contact"
+      }
+    ],
+    "secondary": [
+      {
+        "text": "Home",
+        "link": "/"
+      },
+      {
+        "text": "Admin Portal",
+        "link": "/backendoverviewpage/"
+      }
+    ]
+  },
+  "social": {
+    "twitter": "https://twitter.com/",
+    "linkedin": "https://linkedin.com/",
+    "github": "https://github.com/"
+  },
+  "colors": {
+    "primary": "#6366f1",
+    "secondary": "#4f46e5",
+    "accent": "#818cf8",
+    "text": "#1f2937",
+    "text_light": "#6b7280",
+    "background": "#f9fafb",
+    "border": "#e5e7eb"
+  },
+  "branding": {
+    "font_family": "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
+    "logo_text": "Vortex Agent",
+    "tagline": "Build Your Future With Us"
+  }
+}

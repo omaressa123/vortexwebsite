@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPI Summary - Vortex Agent Admin</title>
+    <link rel="stylesheet" href="/backend-style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <a href="/backend-dashboard">Vortex Agent Admin</a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/backend-dashboard">Dashboard</a></li>
+                    <li><a href="/backend-kpi" class="active">KPI Summary</a></li>
+                    <li><a href="/backend-analytics">Analytics</a></li>
+                    <li><a href="/backend-registrations">Manage Users</a></li>
+                    <li><a href="#" onclick="logout()">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Admin Panel</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/backend-dashboard" class="nav-link">
+                <span class="icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="/backend-kpi" class="nav-link active">
+                <span class="icon">📈</span>
+                <span>KPI Summary</span>
+            </a>
+            <a href="/backend-analytics" class="nav-link">
+                <span class="icon">📉</span>
+                <span>Analytics</span>
+            </a>
+            <a href="/backend-registrations" class="nav-link">
+                <span class="icon">👤</span>
+                <span>Manage Users</span>
+            </a>
+            <a href="/backend-reports" class="nav-link">
+                <span class="icon">📋</span>
+                <span>Reports</span>
+            </a>
+            <hr>
+            <a href="#" onclick="logout()" class="nav-link logout">
+                <span class="icon">🚪</span>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <h1>KPI Summary</h1>
+            <p>Key Performance Indicators Overview</p>
+        </div>
+
+        <!-- KPI Grid -->
+        <div class="kpi-grid">
+            <!-- Performance Metrics -->
+            <section class="kpi-box">
+                <div class="kpi-box-header">
+                    <h3>Performance Metrics</h3>
+                </div>
+                <div class="kpi-content">
+                    <div class="kpi-item">
+                        <div class="kpi-circle" style="width: 120px; height: 120px; margin: 0 auto;">
+                            <svg viewBox="0 0 120 120">
+                                <circle cx="60" cy="60" r="55" fill="none" stroke="#e5e7eb" stroke-width="8"></circle>
+                                <circle cx="60" cy="60" r="55" fill="none" stroke="#6366f1" stroke-width="8" 
+                                    stroke-dasharray="172.8 345.6" stroke-dashoffset="-86.4" style="transform: rotate(-90deg); transform-origin: 60px 60px;"></circle>
+                            </svg>
+                            <div class="circle-text">
+                                <div class="circle-value" id="kpiPerformancePercent">0%</div>
+                                <div class="circle-label">Performance</div>
+                            </div>
+                        </div>
+                        <div class="kpi-description">
+                            <p class="metric-title">System Performance</p>
+                            <p class="metric-trend" id="kpiPerformanceTrend">—</p>
+                        </div>
+                    </div>
+
+                    <div class="kpi-item">
+                        <div class="kpi-metric">
+                            <div class="metric-top">
+                                <span class="metric-icon">⚡</span>
+                                <span class="metric-title">Response Time</span>
+                            </div>
+                            <div class="metric-value" id="kpiResponseTime">—</div>
+                            <div class="metric-info">Average across all endpoints</div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-item">
+                        <div class="kpi-metric">
+                            <div class="metric-top">
+                                <span class="metric-icon">🔴</span>
+                                <span class="metric-title">Downtime</span>
+                            </div>
+                            <div class="metric-value" id="kpiDowntime">—</div>
+                            <div class="metric-info">Last 30 days</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Growth Metrics -->
+            <section class="kpi-box">
+                <div class="kpi-box-header">
+                    <h3>Growth Metrics</h3>
+                </div>
+                <div class="kpi-content">
+                    <div class="kpi-item">
+                        <div class="kpi-metric">
+                            <div class="metric-top">
+                                <span class="metric-icon">📈</span>
+                                <span class="metric-title">User Growth</span>
+                            </div>
+                            <div class="metric-value" id="kpiUserGrowth">—</div>
+                            <div class="metric-info">Month over month</div>
+                            <div class="metric-bar">
+                                <div class="bar-fill" id="kpiUserGrowthBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-item">
+                        <div class="kpi-metric">
+                            <div class="metric-top">
+                                <span class="metric-icon">💹</span>
+                                <span class="metric-title">Revenue Growth</span>
+                            </div>
+                            <div class="metric-value" id="kpiRevenueGrowth">—</div>
+                            <div class="metric-info">Quarter over quarter</div>
+                            <div class="metric-bar">
+                                <div class="bar-fill" id="kpiRevenueGrowthBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-item">
+                        <div class="kpi-metric">
+                            <div class="metric-top">
+                                <span class="metric-icon">🎯</span>
+                                <span class="metric-title">Engagement Rate</span>
+                            </div>
+                            <div class="metric-value" id="kpiEngagementRate">—</div>
+                            <div class="metric-info">User engagement surge</div>
+                            <div class="metric-bar">
+                                <div class="bar-fill" id="kpiEngagementRateBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Conversion Metrics -->
+            <section class="kpi-box">
+                <div class="kpi-box-header">
+                    <h3>Conversion Metrics</h3>
+                </div>
+                <div class="kpi-content conversion-table">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Stage</th>
+                                <th>Users</th>
+                                <th>Rate</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Visitors</td>
+                                <td id="kpiVisitors">0</td>
+                                <td>100%</td>
+                                <td><span class="status-badge success">Optimal</span></td>
+                            </tr>
+                            <tr>
+                                <td>Registered</td>
+                                <td id="kpiRegistered">0</td>
+                                <td>22.2%</td>
+                                <td><span class="status-badge success">Good</span></td>
+                            </tr>
+                            <tr>
+                                <td>Active</td>
+                                <td id="kpiActive">0</td>
+                                <td>85%</td>
+                                <td><span class="status-badge success">Excellent</span></td>
+                            </tr>
+                            <tr>
+                                <td>Premium</td>
+                                <td id="kpiPremium">0</td>
+                                <td>25%</td>
+                                <td><span class="status-badge warning">Pending</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Revenue Metrics -->
+            <section class="kpi-box">
+                <div class="kpi-box-header">
+                    <h3>Revenue Metrics</h3>
+                </div>
+                <div class="kpi-content">
+                    <div class="kpi-item">
+                        <div class="kpi-metric large">
+                            <div class="metric-top">
+                                <span class="metric-icon">💰</span>
+                                <span class="metric-title">Total Revenue</span>
+                            </div>
+                            <div class="metric-value" id="kpiTotalRevenue">—</div>
+                            <div class="metric-info">Last 30 days</div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-item">
+                        <div class="kpi-metric">
+                            <div class="metric-top">
+                                <span class="metric-icon">💵</span>
+                                <span class="metric-title">Avg Revenue/User</span>
+                            </div>
+                            <div class="metric-value" id="kpiAvgRevenuePerUser">—</div>
+                            <div class="metric-info">Per active user</div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-item">
+                        <div class="kpi-metric">
+                            <div class="metric-top">
+                                <span class="metric-icon">📊</span>
+                                <span class="metric-title">Profit Margin</span>
+                            </div>
+                            <div class="metric-value" id="kpiProfitMargin">—</div>
+                            <div class="metric-info">Operating margin</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- User Metrics -->
+            <section class="kpi-box">
+                <div class="kpi-box-header">
+                    <h3>User Metrics</h3>
+                </div>
+                <div class="kpi-content user-grid">
+                    <div class="user-metric">
+                        <div class="metric-box">
+                            <div class="box-icon">👥</div>
+                            <div class="box-data">
+                                <div class="box-label">Total Users</div>
+                                <div class="box-value" id="kpiTotalUsersBox">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="user-metric">
+                        <div class="metric-box">
+                            <div class="box-icon">🟢</div>
+                            <div class="box-data">
+                                <div class="box-label">Active Users</div>
+                                <div class="box-value" id="kpiActiveUsersBox">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="user-metric">
+                        <div class="metric-box">
+                            <div class="box-icon">📝</div>
+                            <div class="box-data">
+                                <div class="box-label">Active Sessions</div>
+                                <div class="box-value" id="kpiActiveSessionsBox">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="user-metric">
+                        <div class="metric-box">
+                            <div class="box-icon">⏱️</div>
+                            <div class="box-data">
+                                <div class="box-label">Avg Session Time</div>
+                                <div class="box-value" id="kpiAvgSessionTimeBox">—</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Health -->
+            <section class="kpi-box">
+                <div class="kpi-box-header">
+                    <h3>System Health</h3>
+                </div>
+                <div class="kpi-content health-status">
+                    <div class="health-item">
+                        <div class="health-label">Server Status</div>
+                        <div class="health-value">
+                            <span class="status-dot" id="healthServerDot"></span>
+                            <span id="healthServerText">—</span>
+                        </div>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-label">Database</div>
+                        <div class="health-value">
+                            <span class="status-dot" id="healthDatabaseDot"></span>
+                            <span id="healthDatabaseText">—</span>
+                        </div>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-label">API Endpoints</div>
+                        <div class="health-value">
+                            <span class="status-dot" id="healthApiDot"></span>
+                            <span id="healthApiText">—</span>
+                        </div>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-label">Backup Service</div>
+                        <div class="health-value">
+                            <span class="status-dot" id="healthBackupDot"></span>
+                            <span id="healthBackupText">—</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="/backend-script.js"></script>
+</body>
+</html>

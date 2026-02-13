@@ -1,0 +1,186 @@
+{
+  "backend": {
+    "version": "1.0.0",
+    "api_endpoints": [
+      {
+        "method": "POST",
+        "endpoint": "/api/login",
+        "description": "Admin login endpoint",
+        "params": ["username", "password"]
+      },
+      {
+        "method": "GET",
+        "endpoint": "/api/dashboard",
+        "description": "Get dashboard data",
+        "authentication": "required"
+      },
+      {
+        "method": "POST",
+        "endpoint": "/api/logout",
+        "description": "Logout endpoint",
+        "authentication": "required"
+      }
+    ]
+  },
+  "users": {
+    "sample_users": [
+      {
+        "id": 1,
+        "fullname": "John Smith",
+        "email": "john@example.com",
+        "registration_date": "2026-01-15",
+        "status": "active"
+      },
+      {
+        "id": 2,
+        "fullname": "Sarah Johnson",
+        "email": "sarah@example.com",
+        "registration_date": "2026-01-18",
+        "status": "active"
+      },
+      {
+        "id": 3,
+        "fullname": "Michael Brown",
+        "email": "michael@example.com",
+        "registration_date": "2026-02-01",
+        "status": "active"
+      }
+    ],
+    "total_users": 10000,
+    "active_users": 8500,
+    "inactive_users": 1500
+  },
+  "administrators": {
+    "sample_admins": [
+      {
+        "id": 1,
+        "adminname": "System Admin",
+        "adminusername": "sysadmin",
+        "adminemail": "admin@vortex-agent.com",
+        "registration_date": "2026-01-01",
+        "role": "Super Admin",
+        "status": "active"
+      },
+      {
+        "id": 2,
+        "adminname": "Content Manager",
+        "adminusername": "content_mgr",
+        "adminemail": "content@vortex-agent.com",
+        "registration_date": "2026-01-05",
+        "role": "Content Admin",
+        "status": "active"
+      }
+    ],
+    "total_administrators": 2
+  },
+  "analytics": {
+    "dashboard": {
+      "total_visits": 150000,
+      "unique_visitors": 45000,
+      "bounce_rate": "32.5%",
+      "average_session_duration": "5m 30s",
+      "pages_per_session": 3.2,
+      "top_pages": [
+        {
+          "page": "Homepage",
+          "views": 75000,
+          "bounce_rate": "28%"
+        },
+        {
+          "page": "Admin Portal",
+          "views": 45000,
+          "bounce_rate": "15%"
+        }
+
+      ],
+      "traffic_sources": [
+        {
+          "source": "Organic Search",
+          "percentage": "45%",
+          "users": 20250
+        },
+        {
+          "source": "Direct",
+          "percentage": "25%",
+          "users": 11250
+        },
+        {
+          "source": "Referral",
+          "percentage": "20%",
+          "users": 9000
+        },
+        {
+          "source": "Social Media",
+          "percentage": "10%",
+          "users": 4500
+        }
+      ]
+    }
+  },
+  "system": {
+    "maintenance_mode": false,
+    "api_version": "v1",
+    "database": {
+      "type": "MongoDB",
+      "version": "5.0"
+    },
+    "cache": {
+      "type": "Redis",
+      "ttl": 3600
+    },
+    "security": {
+      "password_hashing": "bcrypt",
+      "session_timeout": 3600,
+      "max_login_attempts": 5,
+      "lockout_duration": 900
+    }
+  },
+  "features": {
+    "enabled_features": [
+      "admin_portal",
+      "email_verification",
+      "two_factor_auth",
+      "password_reset",
+      "user_dashboard",
+      "admin_dashboard",
+      "analytics",
+      "api_access"
+    ],
+    "coming_soon": [
+      "OAuth integration",
+      "Advanced reporting",
+      "Webhook support",
+      "Mobile app API"
+    ]
+  },
+  "configuration": {
+    "site_name": "Vortex Agent",
+    "site_url": "https://vortex-agent.autocoder.cc",
+    "support_email": "support@website.com",
+    "max_upload_size": "50MB",
+    "session_timeout": 3600,
+    "password_min_length": 6,
+    "admin_password_min_length": 8,
+    "allow_social_login": false
+  },
+  "error_codes": {
+    "001": "Invalid credentials",
+    "002": "User not found",
+    "004": "Username already taken",
+    "005": "Password too weak",
+    "006": "Email verification failed",
+    "007": "Session expired",
+    "008": "Unauthorized access",
+    "009": "Rate limit exceeded",
+    "010": "Server error"
+  },
+  "success_messages": {
+    "001": "Login successful",
+    "003": "Password reset successful",
+    "004": "Email verified successfully",
+    "005": "Profile updated successfully",
+    "006": "Account deleted successfully",
+    "007": "Settings saved successfully",
+    "008": "Logout successful"
+  }
+}

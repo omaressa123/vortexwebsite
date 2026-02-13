@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Orders - Admin</title>
+    <link rel="stylesheet" href="/backend-style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <a href="/backend-dashboard">Vortex Agent Admin</a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/backend-dashboard">Dashboard</a></li>
+                    <li><a href="/backend-service-orders" class="active">Service Orders</a></li>
+                    <li><a href="#" onclick="logout()">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Admin Panel</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/backend-dashboard" class="nav-link">
+                <span class="icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="/backend-service-orders" class="nav-link active">
+                <span class="icon">🧾</span>
+                <span>Service Orders</span>
+            </a>
+            <a href="/backend-registrations" class="nav-link">
+                <span class="icon">👤</span>
+                <span>Manage Users</span>
+            </a>
+            <hr>
+            <a href="#" onclick="logout()" class="nav-link logout">
+                <span class="icon">🚪</span>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="header">
+            <h1>Service Orders</h1>
+            <p>Set deposit amounts and review payment screenshots manually.</p>
+        </div>
+
+        <section class="dashboard-card large">
+            <div class="card-header">
+                <h2>Orders</h2>
+                <span class="time" id="serviceOrdersCount">0</span>
+            </div>
+            <div class="card-body">
+                <div class="registrations-table">
+                    <table class="data-table" id="serviceOrdersTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>User</th>
+                                <th>Service</th>
+                                <th>Deposit</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="serviceOrdersTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-card">
+            <div class="card-header">
+                <h2>Receipts</h2>
+                <span class="time" id="serviceReceiptsHeader">Select an order</span>
+            </div>
+            <div class="card-body">
+                <div id="serviceReceiptsContainer"></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/backend-script.js"></script>
+</body>
+</html>

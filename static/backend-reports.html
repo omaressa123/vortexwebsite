@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Vortex Agent Admin</title>
+    <link rel="stylesheet" href="/backend-style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <a href="/backend-dashboard">Vortex Agent Admin</a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/backend-dashboard">Dashboard</a></li>
+                    <li><a href="/backend-kpi">KPI Summary</a></li>
+                    <li><a href="/backend-analytics">Analytics</a></li>
+                    <li><a href="/backend-registrations">Manage Users</a></li>
+                    <li><a href="#" onclick="logout()">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Admin Panel</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/backend-dashboard" class="nav-link">
+                <span class="icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="/backend-kpi" class="nav-link">
+                <span class="icon">📈</span>
+                <span>KPI Summary</span>
+            </a>
+            <a href="/backend-analytics" class="nav-link">
+                <span class="icon">📉</span>
+                <span>Analytics</span>
+            </a>
+            <a href="/backend-registrations" class="nav-link">
+                <span class="icon">👤</span>
+                <span>Manage Users</span>
+            </a>
+            <a href="/backend-reports" class="nav-link active">
+                <span class="icon">📋</span>
+                <span>Reports</span>
+            </a>
+            <hr>
+            <a href="#" onclick="logout()" class="nav-link logout">
+                <span class="icon">🚪</span>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <h1>Reports</h1>
+            <p>Generate and view platform reports</p>
+        </div>
+
+        <!-- Report Options -->
+        <div class="filters-section">
+            <div class="filter-group">
+                <label>Report Type:</label>
+                <select id="reportType">
+                    <option value="usage">Usage Report</option>
+                    <option value="revenue">Revenue Report</option>
+                    <option value="users">Users Report</option>
+                    <option value="performance">Performance Report</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Period:</label>
+                <select id="reportPeriod">
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="year">This Year</option>
+                </select>
+            </div>
+            <button class="btn-filter" onclick="generateReport()">Generate Report</button>
+            <button class="btn-filter" style="background: #10b981;" onclick="downloadReport()">📥 Download</button>
+            <button class="btn-filter" style="background: #f59e0b;" onclick="printPage()">🖨️ Print</button>
+        </div>
+
+        <!-- Available Reports -->
+        <div class="reports-grid">
+            <!-- Usage Report -->
+            <section class="registrations-card">
+                <div class="card-header">
+                    <h2>Usage Report</h2>
+                    <span class="time">Last Generated: Today</span>
+                </div>
+                <div class="card-body">
+                    <div class="report-content">
+                        <div class="report-item">
+                            <span class="report-label">Total Page Views</span>
+                            <span class="report-value">150,000</span>
+                        </div>
+                        <div class="report-item">
+                            <span class="report-label">Unique Visitors</span>
+                            <span class="report-value">45,000</span>
+                        </div>
+                        <div class="report-item">
+                            <span class="report-label">Average Session Duration</span>
+                            <span class="report-value">5m 30s</span>
+                        </div>
+                        <div class="report-item">
+                            <span class="report-label">Bounce Rate</span>
+                            <span class="report-value">32.5%</span>
+                        </div>
+                        <button class="action-btn" onclick="downloadReport('usage')">Download Report</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Revenue Report -->
+            <section class="registrations-card">
+                <div class="card-header">
+                    <h2>Revenue Report</h2>
+                    <span class="time">Last Generated: Today</span>
+                </div>
+                <div class="card-body">
+                    <div class="report-content">
+                        <div class="report-item">
+                            <span class="report-label">Total Revenue</span>
+                            <span class="report-value">$125,000</span>
+                        </div>
+                        <div class="report-item">
+                            <span class="report-label">Average Revenue/User</span>
+                            <span class="report-value">$12.50</span>
+                        </div>
+                        <div class="report-item">
+                            <span class="report-label">Operating Margin</span>
+                            <span class="report-value">42.18%</span>
+                        </div>
+                        <div class="report-item">
+                            <span class="report-label">Growth Rate</span>
+                            <span class="report-value">↑ 8.3%</span>
+                        </div>
+                        <button class="action-btn" onclick="downloadReport('revenue')">Download Report</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Users Report -->
+            <section class="registrations-card">
+                <div class="card-header">
+                    <h2>Users Report</h2>
+                    <span class="time">Last Generated: Today</span>
+                </div>
+                <div class="card-body">
+                    <div class="report-content">
+                        <div class="report-item">
+                            <span class="report-label">Total Users</span>
+                            <span class="report-value">10,000+</span>
+                        </div>
+                        <div class="report-item">
+                            <span class="report-label">Active Users</span>
+                            <span class="report-value">8,500</span>
+                        </div>
+                        <div class="report-item">
+                            <span class="report-label">Active Sessions</span>
+                            <span class="report-value">3,500</span>
+                        </div>
+                        <div class="report-item">
+                            <span class="report-label">Retention Rate</span>
+                            <span class="report-value">94.3%</span>
+                        </div>
+                        <button class="action-btn" onclick="downloadReport('users')">Download Report</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Performance Report -->
+            <section class="registrations-card">
+                <div class="card-header">
+                    <h2>Performance Report</h2>
+                    <span class="time">Last Generated: Today</span>
+                </div>
+                <div class="card-body">
+                    <div class="report-content">
+                        <div class="report-item">
+                            <span class="report-label">Server Uptime</span>
+                            <span class="report-value">99.9%</span>
+                        </div>
+                        <div class="report-item">
+                            <span class="report-label">Average Response Time</span>
+                            <span class="report-value">145ms</span>
+                        </div>
+                        <div class="report-item">
+                            <span class="report-label">API Success Rate</span>
+                            <span class="report-value">99.5%</span>
+                        </div>
+                        <div class="report-item">
+                            <span class="report-label">Database Status</span>
+                            <span class="report-value">Healthy</span>
+                        </div>
+                        <button class="action-btn" onclick="downloadReport('performance')">Download Report</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Scheduled Reports -->
+        <section class="registrations-card">
+            <div class="card-header">
+                <h2>Scheduled Reports</h2>
+            </div>
+            <div class="card-body">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Report Name</th>
+                            <th>Type</th>
+                            <th>Frequency</th>
+                            <th>Next Run</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Weekly Usage Report</td>
+                            <td>Usage</td>
+                            <td>Weekly</td>
+                            <td>2026-02-19</td>
+                            <td><span class="status-badge success">Active</span></td>
+                            <td>
+                                <button class="action-btn">Edit</button>
+                                <button class="action-btn" style="background: #ef4444;">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Monthly Revenue Report</td>
+                            <td>Revenue</td>
+                            <td>Monthly</td>
+                            <td>2026-03-12</td>
+                            <td><span class="status-badge success">Active</span></td>
+                            <td>
+                                <button class="action-btn">Edit</button>
+                                <button class="action-btn" style="background: #ef4444;">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Monthly User Report</td>
+                            <td>Users</td>
+                            <td>Monthly</td>
+                            <td>2026-03-05</td>
+                            <td><span class="status-badge success">Active</span></td>
+                            <td>
+                                <button class="action-btn">Edit</button>
+                                <button class="action-btn" style="background: #ef4444;">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Report History -->
+        <section class="registrations-card">
+            <div class="card-header">
+                <h2>Report History</h2>
+            </div>
+            <div class="card-body">
+                <div class="activity-log">
+                    <div class="activity-entry">
+                        <div class="activity-time">Today 10:30 AM</div>
+                        <div class="activity-description">
+                            <strong>Weekly Usage Report</strong> generated and sent
+                        </div>
+                    </div>
+                    <div class="activity-entry">
+                        <div class="activity-time">Yesterday 09:00 AM</div>
+                        <div class="activity-description">
+                            <strong>Monthly Revenue Report</strong> generated
+                        </div>
+                    </div>
+                    <div class="activity-entry">
+                        <div class="activity-time">3 days ago 02:30 PM</div>
+                        <div class="activity-description">
+                            <strong>Performance Report</strong> generated manually
+                        </div>
+                    </div>
+                    <div class="activity-entry">
+                        <div class="activity-time">5 days ago 11:45 AM</div>
+                        <div class="activity-description">
+                            <strong>Monthly User Report</strong> generated and sent
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/backend-script.js"></script>
+    <script>
+        function generateReport() {
+            const type = document.getElementById('reportType').value;
+            const period = document.getElementById('reportPeriod').value;
+            showNotification(`Generating ${type} report for ${period}...`, 'info');
+        }
+
+        function downloadReport(type = 'general') {
+            showNotification(`Downloading ${type} report...`, 'success');
+            // Simulate download
+            setTimeout(() => {
+                showNotification('Report downloaded successfully', 'success');
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

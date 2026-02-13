@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Sales Overview</title>
+    <link rel="stylesheet" href="global-dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-grid">
+        <!-- Left Sidebar -->
+        <div class="left-sidebar">
+            <div class="sidebar-header">
+                <h1>OVERVIEW</h1>
+            </div>
+
+            <!-- Year Buttons -->
+            <div class="year-buttons">
+                <button class="year-btn">2019</button>
+                <button class="year-btn">2020</button>
+                <button class="year-btn">2021</button>
+                <button class="year-btn active">2022</button>
+            </div>
+
+            <!-- Region Filter -->
+            <div class="region-filter">
+                <div class="filter-header">
+                    <span>All</span>
+                    <input type="text" placeholder="Search" class="search-box">
+                </div>
+                <div class="region-list">
+                    <div class="region-item">
+                        <input type="checkbox" checked>
+                        <label>Africa</label>
+                    </div>
+                    <div class="region-item">
+                        <input type="checkbox" checked>
+                        <label>Asia</label>
+                    </div>
+                    <div class="region-item">
+                        <input type="checkbox" checked>
+                        <label>Europe</label>
+                    </div>
+                    <div class="region-item">
+                        <input type="checkbox" checked>
+                        <label>North America</label>
+                    </div>
+                    <div class="region-item">
+                        <input type="checkbox" checked>
+                        <label>Oceania</label>
+                    </div>
+                    <div class="region-item">
+                        <input type="checkbox" checked>
+                        <label>South America</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sales by Segment -->
+            <div class="segment-section">
+                <h3>Sales by Segment</h3>
+                <canvas id="segmentChart"></canvas>
+                <div class="segment-legend">
+                    <div class="legend-item">
+                        <span class="legend-color home-office"></span>
+                        <span class="legend-text">Home Office <span class="legend-value">2.1M</span></span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color corporate"></span>
+                        <span class="legend-text">Corporate <span class="legend-value">3.1M</span></span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color consumer"></span>
+                        <span class="legend-text">Consumer <span class="legend-value">6.4M</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sales by Category -->
+            <div class="category-section">
+                <h3>Sales by Year, Quarter and Category</h3>
+                <canvas id="categoryChart"></canvas>
+                <div class="category-legend">
+                    <span class="legend-icon furniture"></span>
+                    <span class="legend-icon office"></span>
+                    <span class="legend-icon technology"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Content -->
+        <div class="center-content">
+            <!-- Top Metrics -->
+            <div class="top-metrics">
+                <div class="metric">
+                    <div class="metric-value">795</div>
+                    <div class="metric-label">Customers</div>
+                </div>
+            </div>
+
+            <!-- World Map -->
+            <div class="world-map-container">
+                <svg id="worldMap" viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Simplified world regions - you can replace with actual SVG map -->
+                    <!-- Using circles to represent regions -->
+                </svg>
+                <div class="map-overlay">
+                    <div class="worldwide-sales">
+                        <div class="sales-title">Worldwide Sales</div>
+                        <div class="sales-amount">12.58M</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profit Metrics -->
+            <div class="profit-metrics">
+                <div class="profit-item">
+                    <div class="profit-label">Gross Profit | %</div>
+                    <div class="profit-value">1.46M | 11.6%</div>
+                </div>
+                <div class="profit-item">
+                    <div class="profit-label">Net Profit | %</div>
+                    <div class="profit-value">1.1M | 8.77%</div>
+                </div>
+            </div>
+
+            <!-- Bottom Charts -->
+            <div class="bottom-charts">
+                <!-- Sales by Year, Quarter, Category -->
+                <div class="chart-section">
+                    <h3>Sales by Year, Quarter and Category</h3>
+                    <canvas id="yearQuarterChart"></canvas>
+                </div>
+
+                <!-- Profit by Product -->
+                <div class="chart-section">
+                    <h3>Profit by Product [Top 5]</h3>
+                    <canvas id="profitChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="right-sidebar">
+            <!-- Top Icons -->
+            <div class="top-icons">
+                <div class="icon-btn">📊</div>
+                <div class="icon-btn">📈</div>
+                <div class="icon-btn">👥</div>
+                <div class="icon-btn">👤</div>
+            </div>
+
+            <!-- Country Table -->
+            <div class="country-section">
+                <div class="country-header">
+                    <span>Country</span>
+                    <div class="country-stats">
+                        <span>Sales | Percent</span>
+                    </div>
+                </div>
+                <div class="country-list">
+                    <div class="country-row">
+                        <span>🇺🇸 United States of America</span>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 100%; background-color: #ff4d4f;"></div>
+                        </div>
+                        <span class="percent">2.29M | 18.2%</span>
+                    </div>
+                    <div class="country-row">
+                        <span>🇦🇺 Australia</span>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 32%; background-color: #ff7a7a;"></div>
+                        </div>
+                        <span class="percent">0.92M | 7.32%</span>
+                    </div>
+                    <div class="country-row">
+                        <span>🇫🇷 France</span>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 37%; background-color: #ff7a7a;"></div>
+                        </div>
+                        <span class="percent">0.85M | 6.78%</span>
+                    </div>
+                    <div class="country-row">
+                        <span>🇨🇳 China</span>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 31%; background-color: #ff7a7a;"></div>
+                        </div>
+                        <span class="percent">0.7M | 5.56%</span>
+                    </div>
+                    <div class="country-row">
+                        <span>🇩🇪 Germany</span>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 28%; background-color: #ff7a7a;"></div>
+                        </div>
+                        <span class="percent">0.62M | 4.96%</span>
+                    </div>
+                    <div class="country-row">
+                        <span>🇲🇽 Mexico</span>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 28%; background-color: #ff7a7a;"></div>
+                        </div>
+                        <span class="percent">0.62M | 4.94%</span>
+                    </div>
+                    <div class="country-row">
+                        <span>🇮🇳 India</span>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 26%; background-color: #ff7a7a;"></div>
+                        </div>
+                        <span class="percent">0.59M | 4.68%</span>
+                    </div>
+                    <div class="country-row">
+                        <span>🇬🇧 United Kingdom</span>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 24%; background-color: #ff7a7a;"></div>
+                        </div>
+                        <span class="percent">0.53M | 4.18%</span>
+                    </div>
+                    <div class="country-row">
+                        <span>🇮🇩 Indonesia</span>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 16%; background-color: #ff7a7a;"></div>
+                        </div>
+                        <span class="percent">0.4M | 3.19%</span>
+                    </div>
+                    <div class="country-row">
+                        <span>🇧🇷 Brazil</span>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 15%; background-color: #ff7a7a;"></div>
+                        </div>
+                        <span class="percent">0.36M | 2.84%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="global-dashboard.js"></script>
+</body>
+</html>

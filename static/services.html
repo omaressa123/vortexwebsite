@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - Vortex Agent</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <a href="/">Vortex Agent</a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/services" class="active">Services</a></li>
+                    <li><a href="#" onclick="logout()">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main">
+        <section class="hero">
+            <div class="container">
+                <h1>Choose Your Service</h1>
+                <p>Pick the service that solves a clear problem for your SME and boosts profit while reducing cost.</p>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h3>1) Data Analysis &amp; Insights</h3>
+                        <p><strong>For:</strong> businesses with data who want decisions, not spreadsheets.</p>
+                        <div class="feature-list">
+                            <div>Data Cleaning</div>
+                            <div>EDA Report</div>
+                            <div>KPI Dashboard</div>
+                            <div>Sales / Operations Analysis</div>
+                            <div>Customer Segmentation</div>
+                        </div>
+                        <p><strong>Value:</strong> “We turn your numbers into decisions.”</p>
+                        <button class="btn btn-primary" onclick="startServiceOrder('data_analysis')">Request Service</button>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>2) Custom AI Solutions</h3>
+                        <p><strong>For:</strong> companies that need a tailored solution.</p>
+                        <div class="feature-list">
+                            <div>AI API Integration</div>
+                            <div>Custom Dashboards</div>
+                            <div>Internal AI Assistant</div>
+                            <div>On-premise Local AI (no API costs)</div>
+                            <div>Full System Development</div>
+                        </div>
+                        <p><strong>Value:</strong> “Built exactly for your needs.”</p>
+                        <button class="btn btn-primary" onclick="startServiceOrder('custom_ai')">Request Service</button>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>3) Automation</h3>
+                        <p><strong>For:</strong> SMEs that want clear ROI by cutting time and operational costs.</p>
+                        <div class="feature-list">
+                            <div>Process Automation</div>
+                            <div>Workflow Optimization</div>
+                            <div>Integrations</div>
+                            <div>Cost Reduction</div>
+                            <div>Profit Increase</div>
+                        </div>
+                        <p><strong>Value:</strong> “Reduce cost and increase profit with automation.”</p>
+                        <button class="btn btn-primary" onclick="startServiceOrder('automation')">Request Service</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container" style="margin-top: 24px;">
+            <div class="panel" style="padding: 16px;">
+                <h3 style="margin: 0 0 8px 0;">How payment works</h3>
+                <p style="margin: 0;">After you request a service, the admin will set the deposit amount. Then you will see an InstaPay QR code, complete the transfer, and upload a screenshot for manual approval.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
