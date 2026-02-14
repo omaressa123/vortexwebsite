@@ -11,7 +11,8 @@ from datetime import datetime
 # Conditional imports based on database type
 db_type = os.environ.get('DATABASE_TYPE', 'mysql')
 if db_type == 'mysql':
-    from flask_mysqldb import MySQL
+    import pymysql
+    pymysql.install_as_MySQLdb()
 else:
     MySQL = None  # Placeholder for SQLite mode
 
