@@ -6,3 +6,6 @@ Werkzeug==2.3.7
 gunicorn==21.2.0
 qrcode==7.4.2
 pillow==10.2.0
+google-auth==2.25.2
+google-auth-oauthlib==1.2.1
+google-auth-httplib2==0.2.0

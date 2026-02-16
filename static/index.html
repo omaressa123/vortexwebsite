@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vortex Agent - Digital Solutions</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Welcome to Vortex Agent</h1>
+            <p class="hero-subtitle">Your trusted partner for digital solutions and automation</p>
+            <div class="hero-buttons">
+                <a href="/login.html" class="btn btn-primary">Get Started</a>
+                <a href="/services" class="btn btn-secondary">View Services</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Check if user is already logged in
+        fetch('/api/auth/user')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // User is logged in, redirect to services
+                    window.location.href = '/services';
+                }
+            })
+            .catch(() => {
+                // Not logged in, stay on login page
+            });
+    </script>
+</body>
+</html>

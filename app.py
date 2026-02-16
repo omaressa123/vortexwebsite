@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, send_from_directory
+from flask import Flask, request, jsonify, render_template, send_from_directory, session, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from config import Config
@@ -7,6 +7,12 @@ import os
 import sqlite3
 import uuid
 from datetime import datetime
+
+# Google OAuth imports
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import Flow
+from google.auth.transport.requests import Request
+import google.auth
 
 # Conditional imports based on database type
 db_type = os.environ.get('DATABASE_TYPE', 'mysql')
@@ -22,6 +28,14 @@ def create_app():
 
     app.config.setdefault('UPLOAD_FOLDER', os.path.join(os.path.dirname(__file__), 'uploads'))
     app.config.setdefault('MAX_CONTENT_LENGTH', 10 * 1024 * 1024)  # 10MB
+    
+    # Session configuration for Google OAuth
+    app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
+    
+    # Google OAuth configuration
+    app.config['GOOGLE_CLIENT_ID'] = os.environ.get('GOOGLE_CLIENT_ID')
+    app.config['GOOGLE_CLIENT_SECRET'] = os.environ.get('GOOGLE_CLIENT_SECRET')
+    app.config['GOOGLE_REDIRECT_URI'] = os.environ.get('GOOGLE_REDIRECT_URI', 'https://vortexwebsite-production.up.railway.app/auth/callback')
     
     # Database setup
     db_type = os.environ.get('DATABASE_TYPE', 'mysql')
@@ -131,19 +145,24 @@ def create_app():
     
     @app.route('/')
     def index():
-        return render_template('index.html')
+        return app.send_static_file('index.html')
     
     @app.route('/index.html')
     def index_html():
-        return render_template('index.html')
+        return app.send_static_file('index.html')
+    
+    @app.route('/login')
+    def login():
+        return app.send_static_file('login.html')
     
     @app.route('/register')
     def register():
-        return render_template('registrationpage.html')
+        # Redirect to login since we only use Google OAuth now
+        return redirect('/login')
     
     @app.route('/backendoverviewpage')
     def backend_overview():
-        return render_template('backendoverviewpage.html')
+        return app.send_static_file('backend-dashboard.html')
 
     @app.route('/services')
     def services_page():
@@ -197,6 +216,143 @@ def create_app():
     def uploaded_receipt(filename):
         receipts_dir = os.path.join(app.config['UPLOAD_FOLDER'], 'receipts')
         return send_from_directory(receipts_dir, filename)
+    
+    # Google OAuth Routes
+    
+    @app.route('/auth/google')
+    def auth_google():
+        # Create OAuth flow
+        flow = Flow.from_client_config(
+            {
+                "web": {
+                    "client_id": app.config['GOOGLE_CLIENT_ID'],
+                    "client_secret": app.config['GOOGLE_CLIENT_SECRET'],
+                    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                    "token_uri": "https://oauth2.googleapis.com/token",
+                    "redirect_uris": [app.config['GOOGLE_REDIRECT_URI']]
+                }
+            },
+            scopes=["openid", "https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"]
+        )
+        
+        flow.redirect_uri = app.config['GOOGLE_REDIRECT_URI']
+        authorization_url, state = flow.authorization_url(
+            access_type='offline',
+            include_granted_scopes='true'
+        )
+        
+        # Store state in session for verification
+        session['state'] = state
+        
+        return redirect(authorization_url)
+    
+    @app.route('/auth/callback')
+    def auth_callback():
+        # Verify state to prevent CSRF
+        state = session.pop('state', None)
+        if state is None or state != request.args.get('state'):
+            return jsonify({'status': 'error', 'message': 'Invalid state parameter'}), 400
+        
+        # Create OAuth flow
+        flow = Flow.from_client_config(
+            {
+                "web": {
+                    "client_id": app.config['GOOGLE_CLIENT_ID'],
+                    "client_secret": app.config['GOOGLE_CLIENT_SECRET'],
+                    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                    "token_uri": "https://oauth2.googleapis.com/token",
+                    "redirect_uris": [app.config['GOOGLE_REDIRECT_URI']]
+                }
+            },
+            scopes=["openid", "https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"]
+        )
+        
+        flow.redirect_uri = app.config['GOOGLE_REDIRECT_URI']
+        
+        # Exchange authorization code for access token
+        flow.fetch_token(authorization_response=request.url)
+        
+        # Get user info
+        credentials = flow.credentials
+        request_session = Request()
+        id_token = credentials.id_token
+        
+        if not id_token:
+            return jsonify({'status': 'error', 'message': 'Failed to get ID token'}), 400
+        
+        # Verify ID token and get user info
+        try:
+            idinfo = google.auth.jwt.decode(id_token, request=request_session, audience=app.config['GOOGLE_CLIENT_ID'])
+            
+            email = idinfo.get('email')
+            name = idinfo.get('name', '')
+            picture = idinfo.get('picture', '')
+            
+            if not email:
+                return jsonify({'status': 'error', 'message': 'Email is required'}), 400
+            
+            # Check if user exists in database
+            user = None
+            if app.sqlite_db:
+                cur = app.sqlite_db.cursor()
+                cur.execute("SELECT * FROM users WHERE email = ?", (email,))
+                user = cur.fetchone()
+            elif app.mysql:
+                cur = app.mysql.cursor()
+                cur.execute("SELECT * FROM users WHERE email = %s", (email,))
+                user = cur.fetchone()
+                cur.close()
+            
+            # If user doesn't exist, create new user
+            if not user:
+                if app.sqlite_db:
+                    cur = app.sqlite_db.cursor()
+                    cur.execute(
+                        "INSERT INTO users (fullname, email, password, registration_date, status) VALUES (?, ?, ?, ?, ?)",
+                        (name, email, '', datetime.now(), 'active')
+                    )
+                    app.sqlite_db.commit()
+                    cur.execute("SELECT * FROM users WHERE email = ?", (email,))
+                    user = cur.fetchone()
+                elif app.mysql:
+                    cur = app.mysql.cursor()
+                    cur.execute(
+                        "INSERT INTO users (fullname, email, password, registration_date, status) VALUES (%s, %s, %s, %s, %s)",
+                        (name, email, '', datetime.now(), 'active')
+                    )
+                    app.mysql.commit()
+                    cur.execute("SELECT * FROM users WHERE email = %s", (email,))
+                    user = cur.fetchone()
+                    cur.close()
+            
+            # Store user in session
+            session['user'] = {
+                'id': user['id'],
+                'fullname': user['fullname'],
+                'email': user['email'],
+                'picture': picture,
+                'login_method': 'google'
+            }
+            
+            return redirect('/services')
+            
+        except Exception as e:
+            return jsonify({'status': 'error', 'message': f'Failed to verify token: {str(e)}'}), 500
+    
+    @app.route('/auth/logout')
+    def auth_logout():
+        session.clear()
+        return redirect('/')
+    
+    @app.route('/api/auth/user')
+    def get_current_user():
+        if 'user' not in session:
+            return jsonify({'status': 'error', 'message': 'Not logged in'}), 401
+        
+        return jsonify({
+            'status': 'success',
+            'user': session['user']
+        })
     
     # API Routes
     
