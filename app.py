@@ -345,6 +345,18 @@ def create_app():
                     cur.execute("SELECT * FROM users WHERE email = %s", (email,))
                     user = cur.fetchone()
                     cur.close()
+                else:
+                    # No database connected - mock user for development
+                    user = {
+                        'id': 0,
+                        'fullname': name,
+                        'email': email,
+                        'password': '',
+                        'status': 'active'
+                    }
+
+            if not user:
+                 return jsonify({'status': 'error', 'message': 'Failed to create or retrieve user'}), 500
             
             # Store user in session
             session['user'] = {
