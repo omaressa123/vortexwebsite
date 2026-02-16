@@ -288,16 +288,22 @@ def create_app():
         # Get user info
         credentials = flow.credentials
         request_session = Request()
-        id_token = credentials.id_token
+        token = credentials.id_token
         
-        if not id_token:
+        if not token:
             return jsonify({'status': 'error', 'message': 'Failed to get ID token'}), 400
         
         # Verify ID token and get user info
         try:
-            # Use google.oauth2.id_token to verify the token
-            from google.oauth2 import id_token
-            idinfo = id_token.verify_oauth2_token(id_token, request_session)
+            # Import correct modules
+            from google.oauth2 import id_token as google_id_token
+            from google.auth.transport.requests import Request
+            
+            idinfo = google_id_token.verify_oauth2_token(
+                token,                 # Use token variable instead of id_token
+                request_session,
+                app.config['GOOGLE_CLIENT_ID']  # Add audience parameter
+            )
             
             email = idinfo.get('email')
             name = idinfo.get('name', '')
