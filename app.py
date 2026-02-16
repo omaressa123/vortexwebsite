@@ -257,59 +257,62 @@ def create_app():
     
     @app.route('/auth/callback')
     def auth_callback():
-        # Verify state to prevent CSRF
-        state = session.pop('state', None)
-        if state is None or state != request.args.get('state'):
-            return jsonify({'status': 'error', 'message': 'Invalid state parameter'}), 400
-        
-        # Create OAuth flow
-        flow = Flow.from_client_config(
-            {
-                "web": {
-                    "client_id": app.config['GOOGLE_CLIENT_ID'],
-                    "client_secret": app.config['GOOGLE_CLIENT_SECRET'],
-                    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-                    "token_uri": "https://oauth2.googleapis.com/token",
-                    "redirect_uris": [app.config['GOOGLE_REDIRECT_URI']]
-                }
-            },
-            scopes=["openid", "https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"]
-        )
-        
-        flow.redirect_uri = app.config['GOOGLE_REDIRECT_URI']
-        
-        # Exchange authorization code for access token
-        # Force HTTPS for the callback URL
-        callback_url = request.url
-        if callback_url.startswith('http://'):
-            callback_url = callback_url.replace('http://', 'https://', 1)
-        
-        flow.fetch_token(authorization_response=callback_url)
-        
-        # Get user info
-        credentials = flow.credentials
-        request_session = Request()
-        token = credentials.id_token
-        
-        if not token:
-            return jsonify({'status': 'error', 'message': 'Failed to get ID token'}), 400
-        
-        # Verify ID token and get user info
         try:
-            idinfo = google_id_token.verify_oauth2_token(
-                token,                 # Use token variable instead of id_token
-                request_session,
-                app.config['GOOGLE_CLIENT_ID']  # Add audience parameter
+            # Verify state to prevent CSRF
+            state = session.pop('state', None)
+            if state is None or state != request.args.get('state'):
+                return jsonify({'status': 'error', 'message': 'Invalid state parameter'}), 400
+            
+            # Create OAuth flow
+            flow = Flow.from_client_config(
+                {
+                    "web": {
+                        "client_id": app.config['GOOGLE_CLIENT_ID'],
+                        "client_secret": app.config['GOOGLE_CLIENT_SECRET'],
+                        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                        "token_uri": "https://oauth2.googleapis.com/token",
+                        "redirect_uris": [app.config['GOOGLE_REDIRECT_URI']]
+                    }
+                },
+                scopes=["openid", "https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"]
             )
             
-            email = idinfo.get('email')
-            name = idinfo.get('name', '')
-            picture = idinfo.get('picture', '')
+            flow.redirect_uri = app.config['GOOGLE_REDIRECT_URI']
             
+            # Exchange authorization code for access token
+            # Force HTTPS for the callback URL
+            callback_url = request.url
+            if callback_url.startswith('http://'):
+                callback_url = callback_url.replace('http://', 'https://', 1)
+            
+            flow.fetch_token(authorization_response=callback_url)
+            
+            # Get user info
+            credentials = flow.credentials
+            
+            if not credentials:
+                return jsonify({"status": "error", "message": "No credentials received"}), 400
+
+            token = credentials.id_token
+
+            if not token:
+                return jsonify({"status": "error", "message": "No ID token received"}), 400
+
+            request_session = Request()
+
+            idinfo = google_id_token.verify_oauth2_token(
+                token,
+                request_session,
+                app.config["GOOGLE_CLIENT_ID"],
+            )
+
+            email = idinfo.get("email")
+            name = idinfo.get("name", "")
+            picture = idinfo.get("picture", "")
+
             if not email:
                 return jsonify({'status': 'error', 'message': 'Email is required'}), 400
-            
-            # Check if user exists in database
+
             user = None
             if app.sqlite_db:
                 cur = app.sqlite_db.cursor()
