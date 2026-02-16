@@ -274,7 +274,12 @@ def create_app():
         flow.redirect_uri = app.config['GOOGLE_REDIRECT_URI']
         
         # Exchange authorization code for access token
-        flow.fetch_token(authorization_response=request.url)
+        # Force HTTPS for the callback URL
+        callback_url = request.url
+        if callback_url.startswith('http://'):
+            callback_url = callback_url.replace('http://', 'https://', 1)
+        
+        flow.fetch_token(authorization_response=callback_url)
         
         # Get user info
         credentials = flow.credentials
