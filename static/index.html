@@ -4,20 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vortex Agent - Digital Solutions</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
-    <div class="hero-section">
-        <div class="hero-content">
-            <h1 class="hero-title">Welcome to Vortex Agent</h1>
-            <p class="hero-subtitle">Your trusted partner for digital solutions and automation</p>
-            <div class="hero-buttons">
-                <a href="/login.html" class="btn btn-primary">Get Started</a>
-                <a href="/services" class="btn btn-secondary">View Services</a>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <a href="/">Vortex Agent</a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
             </div>
         </div>
-    </div>
-    
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home" style="background: linear-gradient(135deg, #8b0000 0%, #660000 100%); color: white; text-align: center; padding: 80px 0;">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Build Your Future With Us</h1>
+                <p>Experience a seamless integration of modern design and robust performance. Join our platform today to unlock exclusive features tailored for your success.</p>
+                <div class="hero-buttons">
+                    <a href="/login" class="btn btn-primary" style="background-color: #8b0000; border: none; padding: 12px 30px; border-radius: 8px; color: white; text-decoration: none; font-weight: 600;">Sign In with Google</a>
+                    <a href="/services" class="btn btn-secondary" style="background-color: transparent; border: 2px solid #8b0000; padding: 12px 30px; border-radius: 8px; color: #8b0000; text-decoration: none; font-weight: 600;">View Services</a>
+                </div>
+                <p class="trust-text">Join over 10,000+ users trusting our platform.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2>Our Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Modern Design</h3>
+                    <p>Beautiful and responsive interface designed for all devices</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Robust Performance</h3>
+                    <p>Lightning-fast platform optimized for reliability</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Secure Gateway</h3>
+                    <p>Enterprise-level security for your peace of mind</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Easy Integration</h3>
+                    <p>Seamless integration with your existing systems</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/admin-login">Admin Portal</a></li>
+                        <li><a href="/register" class="disabled">Register</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="https://twitter.com/" target="_blank">Twitter</a></li>
+                        <li><a href="https://linkedin.com/" target="_blank">LinkedIn</a></li>
+                        <li><a href="https://github.com/" target="_blank">GitHub</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p><a href="mailto:jockeroika@gmail.com">jockeroika@gmail.com</a></p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Vortex Agent. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
     <script>
         // Check if user is already logged in
         fetch('/api/auth/user')
@@ -29,7 +109,7 @@
                 }
             })
             .catch(() => {
-                // Not logged in, stay on login page
+                // Not logged in, stay on home page
             });
     </script>
 </body>

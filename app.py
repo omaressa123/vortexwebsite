@@ -149,11 +149,15 @@ def create_app():
         # Check if this is a Google OAuth callback
         if 'code' in request.args or 'error' in request.args:
             return auth_callback()
-        return render_template('index.html')
+        return app.send_static_file('index.html')
     
     @app.route('/index.html')
     def index_html():
         return app.send_static_file('index.html')
+    
+    @app.route('/admin-login')
+    def admin_login_page():
+        return app.send_static_file('admin-login.html')
     
     @app.route('/login')
     def login():
@@ -377,10 +381,25 @@ def create_app():
         print(f"DEBUG: app.sqlite_db is None: {app.sqlite_db is None}")
         print(f"DEBUG: username: {username}, password: {password}")
         
+        # Development mode override
+        if username == 'omaressa' and password == 'omaressa123':
+            print("DEBUG: Development mode login successful")
+            return jsonify({
+                'status': 'success',
+                'user_id': 1,
+                'username': 'omaressa',
+                'adminname': 'Admin User',
+                'token': 'admin-development-token',
+                'expires_in': 3600,
+                'type': 'admin',
+                'role': 'super_admin',
+                'note': 'Development mode - no database'
+            })
+        
         if app.mysql is None and app.sqlite_db is None:
             print("DEBUG: Entering development mode")
             # Development mode - mock admin login
-            if username == 'omaressa' and password == 'omressa123':
+            if username == 'omaressa' and password == 'omaressa123':
                 print("DEBUG: Development mode login successful")
                 return jsonify({
                     'status': 'success',

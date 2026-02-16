@@ -8,15 +8,15 @@
 }
 
 :root {
-    --primary-color: #000000;
-    --secondary-color: #cc0000;
-    --accent-color: #ff0000;
-    --text-color: #000000;
-    --text-light: #333333;
-    --bg-color: #ffffff;
-    --border-color: #000000;
-    --success-color: #000000;
-    --error-color: #cc0000;
+    --primary-color: #8b0000;
+    --secondary-color: #660000;
+    --accent-color: #dc143c;
+    --text-color: #ffffff;
+    --text-light: #cccccc;
+    --bg-color: #000000;
+    --border-color: #333333;
+    --success-color: #10b981;
+    --error-color: #ef4444;
     --transition: all 0.3s ease;
 }
 
