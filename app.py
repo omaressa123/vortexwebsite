@@ -120,10 +120,10 @@ def create_app():
                 app.sqlite_db.commit()
             else:
                 with app.app_context():
-                    cur = app.mysql.connection.cursor()
+                    cur = app.mysql.cursor()
                     cur.execute(service_orders_mysql)
                     cur.execute(payment_receipts_mysql)
-                    app.mysql.connection.commit()
+                    app.mysql.commit()
         except Exception as e:
             print(f"Service tables init error: {e}")
 
@@ -252,24 +252,24 @@ def create_app():
                     return jsonify({'status': 'error', 'message': 'Invalid credentials'}), 401
             else:
                 # MySQL query
-                with app.app_context():
-                    cur = app.mysql.connection.cursor()
-                    cur.execute("SELECT * FROM admins WHERE adminusername = %s OR adminemail = %s", (username, username))
-                    user = cur.fetchone()
+                cur = app.mysql.cursor()
+                cur.execute("SELECT * FROM admins WHERE adminusername = %s OR adminemail = %s", (username, username))
+                user = cur.fetchone()
+                cur.close()
                     
-                    if user and check_password_hash(user['password'], password):
-                        return jsonify({
-                            'status': 'success',
-                            'user_id': user['id'],
-                            'username': user['adminusername'],
-                            'adminname': user['adminname'],
-                            'token': 'mysql-admin-token',
-                            'expires_in': 3600,
-                            'type': 'admin',
-                            'role': user['role']
-                        })
-                    else:
-                        return jsonify({'status': 'error', 'message': 'Invalid credentials'}), 401
+                if user and check_password_hash(user['password'], password):
+                    return jsonify({
+                        'status': 'success',
+                        'user_id': user['id'],
+                        'username': user['adminusername'],
+                        'adminname': user['adminname'],
+                        'token': 'mysql-admin-token',
+                        'expires_in': 3600,
+                        'type': 'admin',
+                        'role': user['role']
+                    })
+                else:
+                    return jsonify({'status': 'error', 'message': 'Invalid credentials'}), 401
         except Exception as e:
             return jsonify({'status': 'error', 'message': str(e)}), 500
     
@@ -315,7 +315,7 @@ def create_app():
             else:
                 # MySQL query
                 with app.app_context():
-                    cur = app.mysql.connection.cursor()
+                    cur = app.mysql.cursor()
                     cur.execute("SELECT * FROM admins WHERE adminusername = %s OR adminemail = %s", (username, username))
                     user = cur.fetchone()
                     
@@ -374,19 +374,19 @@ def create_app():
                 })
 
             with app.app_context():
-                cur = app.mysql.connection.cursor()
+                cur = app.mysql.cursor()
                 cur.execute(
                     "INSERT INTO users (fullname, email, password) VALUES (%s, %s, %s)",
                     (fullname, email, hashed_password)
                 )
-                app.mysql.connection.commit()
+                app.mysql.commit()
                 return jsonify({
                     'status': 'success',
                     'message': 'User registered successfully'
                 })
         except Exception as e:
             if app.mysql:
-                app.mysql.connection.rollback()
+                app.mysql.rollback()
             return jsonify({'status': 'error', 'message': f'Database error: {str(e)}'}), 500
 
     # ========================================
@@ -444,18 +444,18 @@ def create_app():
                 order_id = cur.lastrowid
             else:
                 with app.app_context():
-                    cur = app.mysql.connection.cursor()
+                    cur = app.mysql.cursor()
                     cur.execute(
                         "INSERT INTO service_orders (user_email, user_fullname, service_key, service_name, deposit_amount, status, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                         (user_email, user_fullname, service_key, service_name, None, 'pending_quote', now, now)
                     )
-                    app.mysql.connection.commit()
+                    app.mysql.commit()
                     order_id = cur.lastrowid
 
             return jsonify({'status': 'success', 'order': {'id': order_id, 'status': 'pending_quote'}})
         except Exception as e:
             if app.mysql:
-                app.mysql.connection.rollback()
+                app.mysql.rollback()
             return jsonify({'status': 'error', 'message': f'Database error: {str(e)}'}), 500
 
     @app.route('/api/services/orders/<int:order_id>', methods=['GET'])
@@ -491,7 +491,7 @@ def create_app():
                 order_dict = dict(order)
             else:
                 with app.app_context():
-                    cur = app.mysql.connection.cursor()
+                    cur = app.mysql.cursor()
                     cur.execute("SELECT * FROM service_orders WHERE id = %s", (order_id,))
                     order = cur.fetchone()
                     if not order:
@@ -539,7 +539,7 @@ def create_app():
                 orders = [dict(r) for r in cur.fetchall()]
             else:
                 with app.app_context():
-                    cur = app.mysql.connection.cursor()
+                    cur = app.mysql.cursor()
                     cur.execute("SELECT * FROM service_orders ORDER BY id DESC")
                     orders = [dict(r) for r in cur.fetchall()]
             return jsonify({'status': 'success', 'orders': orders})
@@ -571,17 +571,17 @@ def create_app():
                 app.sqlite_db.commit()
             else:
                 with app.app_context():
-                    cur = app.mysql.connection.cursor()
+                    cur = app.mysql.cursor()
                     cur.execute(
                         "UPDATE service_orders SET deposit_amount = %s, status = %s, updated_at = %s WHERE id = %s",
                         (deposit_amount, 'quoted', now, order_id)
                     )
-                    app.mysql.connection.commit()
+                    app.mysql.commit()
 
             return jsonify({'status': 'success', 'order': {'id': order_id, 'deposit_amount': deposit_amount, 'status': 'quoted'}})
         except Exception as e:
             if app.mysql:
-                app.mysql.connection.rollback()
+                app.mysql.rollback()
             return jsonify({'status': 'error', 'message': f'Database error: {str(e)}'}), 500
 
     @app.route('/api/services/orders/<int:order_id>/qr', methods=['GET'])
@@ -606,7 +606,7 @@ def create_app():
                 deposit_amount = row['deposit_amount']
             else:
                 with app.app_context():
-                    cur = app.mysql.connection.cursor()
+                    cur = app.mysql.cursor()
                     cur.execute("SELECT service_name, deposit_amount FROM service_orders WHERE id = %s", (order_id,))
                     row = cur.fetchone()
                     if not row:
@@ -653,7 +653,7 @@ def create_app():
                         return jsonify({'status': 'error', 'message': 'Order not found'}), 404
                 else:
                     with app.app_context():
-                        cur = app.mysql.connection.cursor()
+                        cur = app.mysql.cursor()
                         cur.execute("SELECT id FROM service_orders WHERE id = %s", (order_id,))
                         if not cur.fetchone():
                             return jsonify({'status': 'error', 'message': 'Order not found'}), 404
@@ -686,7 +686,7 @@ def create_app():
                 app.sqlite_db.commit()
             else:
                 with app.app_context():
-                    cur = app.mysql.connection.cursor()
+                    cur = app.mysql.cursor()
                     cur.execute(
                         "INSERT INTO payment_receipts (order_id, filename, status, uploaded_at) VALUES (%s, %s, %s, %s)",
                         (order_id, unique_name, 'pending', now)
@@ -695,12 +695,12 @@ def create_app():
                         "UPDATE service_orders SET status = %s, updated_at = %s WHERE id = %s",
                         ('receipt_uploaded', now, order_id)
                     )
-                    app.mysql.connection.commit()
+                    app.mysql.commit()
 
             return jsonify({'status': 'success', 'filename': unique_name}), 200
         except Exception as e:
             if app.mysql:
-                app.mysql.connection.rollback()
+                app.mysql.rollback()
             return jsonify({'status': 'error', 'message': f'Database error: {str(e)}'}), 500
 
     @app.route('/api/admin/service-orders/<int:order_id>/receipts', methods=['GET'])
@@ -715,7 +715,7 @@ def create_app():
                 receipts = [dict(r) for r in cur.fetchall()]
             else:
                 with app.app_context():
-                    cur = app.mysql.connection.cursor()
+                    cur = app.mysql.cursor()
                     cur.execute("SELECT * FROM payment_receipts WHERE order_id = %s ORDER BY id DESC", (order_id,))
                     receipts = [dict(r) for r in cur.fetchall()]
             return jsonify({'status': 'success', 'receipts': receipts})
@@ -756,7 +756,7 @@ def create_app():
                 app.sqlite_db.commit()
             else:
                 with app.app_context():
-                    cur = app.mysql.connection.cursor()
+                    cur = app.mysql.cursor()
                     cur.execute(
                         "UPDATE payment_receipts SET status = %s, reviewed_at = %s, admin_note = %s WHERE id = %s AND order_id = %s",
                         (new_status, now, admin_note, receipt_id, order_id)
@@ -765,12 +765,12 @@ def create_app():
                         "UPDATE service_orders SET status = %s, updated_at = %s WHERE id = %s",
                         (order_status, now, order_id)
                     )
-                    app.mysql.connection.commit()
+                    app.mysql.commit()
 
             return jsonify({'status': 'success'})
         except Exception as e:
             if app.mysql:
-                app.mysql.connection.rollback()
+                app.mysql.rollback()
             return jsonify({'status': 'error', 'message': f'Database error: {str(e)}'}), 500
     
     @app.route('/api/register-admin', methods=['POST'])
@@ -810,19 +810,19 @@ def create_app():
                 })
 
             with app.app_context():
-                cur = app.mysql.connection.cursor()
+                cur = app.mysql.cursor()
                 cur.execute(
                     "INSERT INTO admins (adminname, adminusername, adminemail, password) VALUES (%s, %s, %s, %s)",
                     (adminname, adminusername, adminemail, hashed_password)
                 )
-                app.mysql.connection.commit()
+                app.mysql.commit()
                 return jsonify({
                     'status': 'success',
                     'message': 'Administrator registered successfully'
                 })
         except Exception as e:
             if app.mysql:
-                app.mysql.connection.rollback()
+                app.mysql.rollback()
             return jsonify({'status': 'error', 'message': f'Database error: {str(e)}'}), 500
     
     @app.route('/api/admin/users', methods=['GET'])
@@ -855,7 +855,7 @@ def create_app():
                 })
 
             with app.app_context():
-                cur = app.mysql.connection.cursor()
+                cur = app.mysql.cursor()
                 cur.execute("SELECT id, fullname, email, registration_date, status FROM users")
                 users = cur.fetchall()
                 
@@ -918,7 +918,7 @@ def create_app():
                 return jsonify({'status': 'success', 'admins': admins})
 
             with app.app_context():
-                cur = app.mysql.connection.cursor()
+                cur = app.mysql.cursor()
                 cur.execute("SELECT id, adminname, adminusername, adminemail, role FROM admins")
                 rows = cur.fetchall()
                 admins = []
@@ -959,7 +959,7 @@ def create_app():
                 active_users = cur.fetchone()[0]
             else:
                 with app.app_context():
-                    cur = app.mysql.connection.cursor()
+                    cur = app.mysql.cursor()
                     cur.execute("SELECT COUNT(*) as count FROM users")
                     total_users = cur.fetchone()['count']
 
@@ -1102,7 +1102,7 @@ def create_app():
                 })
 
             with app.app_context():
-                cur = app.mysql.connection.cursor()
+                cur = app.mysql.cursor()
                 
                 # Get total users
                 cur.execute("SELECT COUNT(*) as count FROM users")
