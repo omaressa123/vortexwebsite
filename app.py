@@ -40,17 +40,19 @@ def create_app():
             print(f"SQLite connection error: {e}")
             app.sqlite_db = None
     else:
-        # Initialize MySQL after app configuration
+        # Initialize MySQL using PyMySQL
         try:
-            app.mysql = MySQL(app)
-            # Test database connection
-            with app.app_context():
-                cursor = app.mysql.connection.cursor()
-                cursor.close()
-            print("MySQL connection successful")
+            import pymysql
+            app.mysql = pymysql.connect(
+                host=os.environ.get('MYSQL_HOST'),
+                user=os.environ.get('MYSQL_USER'),
+                password=os.environ.get('MYSQL_PASSWORD'),
+                database=os.environ.get('MYSQL_DB'),
+                cursorclass=pymysql.cursors.DictCursor
+            )
+            print("MySQL database connected successfully")
         except Exception as e:
             print(f"MySQL connection error: {e}")
-            print("Running in development mode without database")
             app.mysql = None
 
     def init_service_tables():
