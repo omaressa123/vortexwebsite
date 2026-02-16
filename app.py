@@ -19,6 +19,7 @@ db_type = os.environ.get('DATABASE_TYPE', 'mysql')
 if db_type == 'mysql':
     import pymysql
     pymysql.install_as_MySQLdb()
+
 else:
     MySQL = None  # Placeholder for SQLite mode
 
@@ -430,7 +431,7 @@ def create_app():
             return jsonify({'status': 'error', 'message': str(e)}), 500
     
     @app.route('/api/login', methods=['POST'])
-    def login():
+    def user_login():
         data = request.get_json()
         username = data.get('username', '')
         password = data.get('password', '')
