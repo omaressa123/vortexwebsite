@@ -106,8 +106,7 @@ body {
    ======================================== */
 .hero {
     padding: 80px 0;
-    background: radial-gradient(1200px 400px at 50% 0%, rgba(225, 29, 72, 0.35) 0%, rgba(11, 11, 16, 0.95) 60%),
-                linear-gradient(135deg, #16060a 0%, #7f0f2a 100%);
+    background: linear-gradient(135deg, #e11d48 0%, #9f1239 100%);
     color: white;
     text-align: center;
 }
