@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vortex Agent - Build Your Future With Us</title>
-    <link rel="stylesheet" href="../static/style.css">
+    <title>Vortex Agent - Digital Solutions</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <!-- Navigation -->
@@ -12,7 +12,7 @@
         <div class="container">
             <div class="nav-wrapper">
                 <div class="logo">
-                    <a href="index.html">Vortex Agent</a>
+                    <a href="/">Vortex Agent</a>
                 </div>
                 <ul class="nav-menu">
                     <li><a href="#home">Home</a></li>
@@ -28,9 +28,12 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>Build Your Future With Us</h1>
-                <p>Experience a seamless integration of modern design and robust performance. Join our platform today to unlock exclusive features tailored for your success.</p>
-                <a href="/register" class="btn btn-primary">Register Now</a>
+                <h1>Welcome to Vortex Agent</h1>
+                <p>Your trusted partner for digital solutions and automation</p>
+                <div class="hero-buttons">
+                    <a href="/login" class="btn btn-primary">Sign In with Google</a>
+                    <a href="/services" class="btn btn-secondary">View Services</a>
+                </div>
                 <p class="trust-text">Join over 10,000+ users trusting our platform.</p>
             </div>
         </div>
@@ -68,9 +71,9 @@
                 <div class="footer-section">
                     <h4>Navigation</h4>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="/backendoverviewpage">Admin Portal</a></li>
-                        <li><a href="/register" class="disabled">Register</a></li>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/login">Sign In</a></li>
+                        <li><a href="/services">Services</a></li>
                     </ul>
                 </div>
                 
@@ -95,6 +98,19 @@
         </div>
     </footer>
 
-    <script src="../static/script.js"></script>
+    <script>
+        // Check if user is already logged in
+        fetch('/api/auth/user')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // User is logged in, redirect to services
+                    window.location.href = '/services';
+                }
+            })
+            .catch(() => {
+                // Not logged in, stay on home page
+            });
+    </script>
 </body>
 </html>

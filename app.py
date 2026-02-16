@@ -149,7 +149,7 @@ def create_app():
         # Check if this is a Google OAuth callback
         if 'code' in request.args or 'error' in request.args:
             return auth_callback()
-        return app.send_static_file('index.html')
+        return render_template('index.html')
     
     @app.route('/index.html')
     def index_html():
