@@ -1179,13 +1179,24 @@ def create_app():
     @app.route('/api/admin/init-db', methods=['POST'])
     def init_database():
         try:
+            print("DEBUG: Starting database initialization...")
+            print(f"DEBUG: Environment variables - MYSQL_HOST: {os.environ.get('MYSQL_HOST')}, MYSQL_USER: {os.environ.get('MYSQL_USER')}, MYSQL_DB: {os.environ.get('MYSQL_DB')}")
+            
             from init_db import init_database as run_init
             run_init()
+            print("DEBUG: Database initialization completed successfully")
             return jsonify({
                 'status': 'success',
                 'message': 'Database initialized successfully'
             })
+        except ImportError as e:
+            print(f"DEBUG: Import error: {str(e)}")
+            return jsonify({
+                'status': 'error',
+                'message': f'Import error: {str(e)}'
+            }), 500
         except Exception as e:
+            print(f"DEBUG: General error: {str(e)}")
             return jsonify({
                 'status': 'error',
                 'message': f'Failed to initialize database: {str(e)}'
