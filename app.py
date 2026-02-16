@@ -12,6 +12,7 @@ from datetime import datetime
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
 from google.auth.transport.requests import Request
+from google.oauth2 import id_token as google_id_token
 import google.auth
 
 # Conditional imports based on database type
@@ -295,10 +296,6 @@ def create_app():
         
         # Verify ID token and get user info
         try:
-            # Import correct modules
-            from google.oauth2 import id_token as google_id_token
-            from google.auth.transport.requests import Request
-            
             idinfo = google_id_token.verify_oauth2_token(
                 token,                 # Use token variable instead of id_token
                 request_session,
