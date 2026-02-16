@@ -291,7 +291,9 @@ def create_app():
         
         # Verify ID token and get user info
         try:
-            idinfo = google.auth.jwt.decode(id_token, request=request_session, audience=app.config['GOOGLE_CLIENT_ID'])
+            # Use google.oauth2.id_token to verify the token
+            from google.oauth2 import id_token
+            idinfo = id_token.verify_oauth2_token(id_token, request_session)
             
             email = idinfo.get('email')
             name = idinfo.get('name', '')
