@@ -1176,6 +1176,21 @@ def create_app():
         except Exception as e:
             return jsonify({'status': 'error', 'message': f'Database error: {str(e)}'}), 500
     
+    @app.route('/api/admin/init-db', methods=['POST'])
+    def init_database():
+        try:
+            from init_db import init_database as run_init
+            run_init()
+            return jsonify({
+                'status': 'success',
+                'message': 'Database initialized successfully'
+            })
+        except Exception as e:
+            return jsonify({
+                'status': 'error',
+                'message': f'Failed to initialize database: {str(e)}'
+            }), 500
+    
     @app.route('/api/logout', methods=['POST'])
     def logout():
         return jsonify({
