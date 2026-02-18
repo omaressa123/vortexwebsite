@@ -152,6 +152,10 @@ def create_app():
             return auth_callback()
         return app.send_static_file('index.html')
     
+    @app.route('/style.css')
+    def style_css():
+        return app.send_static_file('style.css')
+    
     @app.route('/index.html')
     def index_html():
         return app.send_static_file('index.html')
