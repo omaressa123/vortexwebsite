@@ -104,6 +104,7 @@
             .then(response => {
                 if (response.status === 401) {
                     // Not logged in, stay on home page
+                    console.log('User not logged in - staying on home page');
                     return null;
                 }
                 return response.json();
@@ -111,12 +112,16 @@
             .then(data => {
                 if (data && data.status === 'success' && data.user) {
                     // User is logged in, redirect to services
+                    console.log('User is logged in - redirecting to services');
                     window.location.href = '/services';
+                } else {
+                    // Not logged in or no data, stay on home page
+                    console.log('User not logged in or no data - staying on home page');
                 }
-                // If not logged in or no data, stay on home page
             })
-            .catch(() => {
+            .catch(error => {
                 // Error occurred, stay on home page
+                console.log('Error checking user status:', error);
             });
     </script>
 </body>
