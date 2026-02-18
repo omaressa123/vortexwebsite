@@ -25,14 +25,14 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero" id="home" style="background: linear-gradient(135deg, #8b0000 0%, #660000 100%); color: white; text-align: center; padding: 80px 0;">
+    <section class="hero" id="home">
         <div class="container">
             <div class="hero-content">
                 <h1>Build Your Future With Us</h1>
                 <p>Experience a seamless integration of modern design and robust performance. Join our platform today to unlock exclusive features tailored for your success.</p>
                 <div class="hero-buttons">
-                    <a href="/login" class="btn btn-primary" style="background-color: #8b0000; border: none; padding: 12px 30px; border-radius: 8px; color: white; text-decoration: none; font-weight: 600;">Sign In with Google</a>
-                    <a href="/services" class="btn btn-secondary" style="background-color: transparent; border: 2px solid #8b0000; padding: 12px 30px; border-radius: 8px; color: #8b0000; text-decoration: none; font-weight: 600;">View Services</a>
+                    <a href="/login" class="btn btn-primary">Sign In with Google</a>
+                    <a href="/services" class="btn btn-secondary">View Services</a>
                 </div>
                 <p class="trust-text">Join over 10,000+ users trusting our platform.</p>
             </div>
@@ -101,16 +101,22 @@
     <script>
         // Check if user is already logged in
         fetch('/api/auth/user')
-            .then(response => response.json())
+            .then(response => {
+                if (response.status === 401) {
+                    // Not logged in, stay on home page
+                    return null;
+                }
+                return response.json();
+            })
             .then(data => {
-                if (data.status === 'success' && data.user) {
+                if (data && data.status === 'success' && data.user) {
                     // User is logged in, redirect to services
                     window.location.href = '/services';
                 }
-                // If not logged in, stay on home page
+                // If not logged in or no data, stay on home page
             })
             .catch(() => {
-                // Not logged in, stay on home page
+                // Error occurred, stay on home page
             });
     </script>
 </body>
