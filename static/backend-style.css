@@ -20,16 +20,17 @@
 }
 
 :root {
-    --primary: #e11d48;
-    --primary-dark: #9f1239;
-    --primary-light: #fb7185;
-    --text: #ffffff;
-    --text-light: #e2e8f0;
-    --bg: #0b0b10;
-    --border: #4a151f;
-    --success: #22c55e;
-    --warning: #f97316;
-    --error: #ef4444;
+    --primary: #4DA3FF;
+    --primary-dark: #3D8FEF;
+    --primary-light: #5DAFFF;
+    --text: #EAEAEA;
+    --text-light: #B8B8B8;
+    --bg: #1E1E2F;
+    --border: #3A3A50;
+    --success: #3DDC97;
+    --warning: #FFB86C;
+    --error: #FF6B6B;
+    --card-bg: #2A2A40;
     --sidebar-bg: #050507;
     --transition: all 0.3s ease;
 }
